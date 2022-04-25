@@ -11,7 +11,7 @@ BOARD_STARTINGPOINTX = ((WIDTH - BOARD_WIDTH) / 2)
 BOARD_STARTINGPOINTY = (HEIGHT - BOARD_HEIGHT) / 2
 
 
-board = Board(WIN, BOARD_WIDTH, BOARD_HEIGHT, BOARD_STARTINGPOINTX, BOARD_STARTINGPOINTY)
+board = Board( BOARD_WIDTH, BOARD_HEIGHT)
 
 FPS = 60
 
@@ -19,7 +19,7 @@ ORANGE = (235, 180, 52)
 
 def draw_window():
     WIN.fill(ORANGE)
-    board.draw()
+    WIN.blit(board.draw(),(BOARD_STARTINGPOINTX, BOARD_STARTINGPOINTY))
     pygame.display.update()
 
 def main():
