@@ -1,7 +1,9 @@
 from numbers import Number
 from field import Field
 from pawn import Pawn
+from customEvents import playerMoved
 import pygame
+import globals
 
 class Board:
 
@@ -11,6 +13,7 @@ class Board:
         self.width = width
         self.height = height
         self.surface = pygame.Surface((self.width, self.height))
+        self.tempPawnSurface = None
         self.rows = 6
         self.columns = 6
         self.fieldArray2D = []
@@ -46,18 +49,36 @@ class Board:
     def moveMouse(self, event, currentTurnPlayer):
         for column in self.fieldArray2D:
             for field in column:
-                field.checkMouseHover(event, currentTurnPlayer)
+                if (field.isPawnCurrentlyDragged() == False):
+                    field.checkMouseHover(event, currentTurnPlayer)
+                else:
+                    self.tempPawnSurface = (field.getPawn().draw(),(event.pos[0] - globals.boardStartingPointX - field.getPawn().getSize()[0] / 2, event.pos[1] - globals.boardStartingPointY - field.getPawn().getSize()[1] / 2))
+                    
+
 
     def mousePressed(self, event, currentTurnPlayer):
+        currentField = None
         for columnIndex, column in enumerate(self.fieldArray2D):
             for rowIndex, field in enumerate(column):
                 if(field.isCurrentlyHovered()):
-                   result =  self.checkPossibleMoves(columnIndex, rowIndex, currentTurnPlayer)
-                   print(result)
-                   self.markPossibleMove(result[0][0])
+                    currentField = field
+                    result =  self.checkPossibleMoves(columnIndex, rowIndex, currentTurnPlayer)
+                    print(result)
+                    if result[0]:
+                        self.markPossibleMove(result[0][0])
+                    if result[1]:
+                        self.markPossibleBeats(result[1])
+                    field.startDraggingAndPassSurface(self.surface)
+                    self.tempPawnSurface = (field.getPawn().draw(),(event.pos[0] - globals.boardStartingPointX - field.getPawn().getSize()[0] / 2, event.pos[1] - globals.boardStartingPointY - field.getPawn().getSize()[1] / 2))
+        
+
 
     def markPossibleMove(self, movePosition):
         self.fieldArray2D[movePosition[0]][movePosition[1]].markAsPossibleMove(True)
+    
+    def markPossibleBeats(self, beatPositions):
+        for position in beatPositions:
+            self.fieldArray2D[position[0]][position[1]].markAsPossibleBeat(True)
 
     def checkPossibleMoves(self, column, row,  currentTurnPlayer):
         possibleMove = []
@@ -73,17 +94,45 @@ class Board:
                 if (row < self.rows - 1):
                        if (self.fieldArray2D[column+1][row + 1].getPawn() != None and self.fieldArray2D[column+1][row + 1].getPawn().getTeam() == "black"):
                         possibleBeats.append((column + 1, row + 1))
+        elif(currentTurnPlayer.getTeam() == "black"):
+            if (column  > 0): 
+                if(self.fieldArray2D[column - 1][row].getPawn() == None):
+                    possibleMove.append((column - 1, row))
+                if (row > 0):
+                    if (self.fieldArray2D[column - 1][row - 1].getPawn() != None and self.fieldArray2D[column - 1][row - 1].getPawn().getTeam() == "white"):
+                        possibleBeats.append((column - 1, row - 1))
+                if (row < self.rows - 1):
+                       if (self.fieldArray2D[column - 1][row + 1].getPawn() != None and self.fieldArray2D[column - 1][row + 1].getPawn().getTeam() == "white"):
+                        possibleBeats.append((column - 1, row + 1))
         result.append(possibleMove)
         result.append(possibleBeats)
         return result
 
     def mouseReleased(self,event, currentTurnPlayer):
-         for columnIndex, column in enumerate(self.fieldArray2D):
+        oldField = None
+        newField = None
+        for columnIndex, column in enumerate(self.fieldArray2D):
             for rowIndex, field in enumerate(column):
-                field.markAsPossibleMove(False)
+                if(field.isMarkedAsPossibleMove()):
+                    if(field.checkDraggedPawnHover(event)):
+                        newField = field
+                    field.markAsPossibleMove(False)
+                field.markAsPossibleBeat(False)
+                if(field.isPawnCurrentlyDragged()):
+                    oldField = field
+                    field.stopDraggingAndDeleteSurface()
+                    self.tempPawnSurface = None
+                if(field.isCurrentlyHovered()):
+                    field.markAsHovered(False)
+        if(oldField and newField):
+            newField.addPawn(oldField.getPawn())
+            oldField.removePawn()
+            pygame.event.post(playerMoved)
 
     def draw(self):
         for columnIndex,column in enumerate(self.fieldArray2D):
             for rowIndex, field in enumerate(column):  
                 self.surface.blit(field.draw(), field.getPosition())
+        if(self.tempPawnSurface):
+            self.surface.blit(self.tempPawnSurface[0] ,self.tempPawnSurface[1])
         return self.surface
