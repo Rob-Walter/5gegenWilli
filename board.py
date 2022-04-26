@@ -31,6 +31,9 @@ class Board:
             self.fieldArray2D.append(column)
         self.initializeNewGame()
 
+    def get2dArray(self):
+        return self.fieldArray2D
+
     def initializeNewGame(self):
         whitePlayerColumn = self.fieldArray2D[0]
         for field in whitePlayerColumn:
