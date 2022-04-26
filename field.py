@@ -13,6 +13,7 @@ class Field:
         self.height = height
         self.color = color
         self.isHovered = False
+        self.isMovePossible = False
 
     def addPawn(self,pawn : Pawn):
         self.pawn = pawn
@@ -29,6 +30,9 @@ class Field:
     def isCurrentlyHovered(self):
         return self.isHovered
 
+    def markAsPossibleMove(self, isTrue):
+        self.isMovePossible = isTrue
+
     def checkMouseHover(self, event, currentTurnPlayer):
         if(self.pawn != None):
             if(self.surface.get_rect(topleft=((globals.boardStartingPointX + self.x),(globals.boardStartingPointY + self.y))).collidepoint(event.pos) and self.pawn.getTeam() == currentTurnPlayer.getTeam()):
@@ -40,6 +44,8 @@ class Field:
         pygame.draw.rect(self.surface,self.color,pygame.Rect(0,0,self.width,self.height))
         if (self.isHovered == True):
             pygame.draw.rect(self.surface,globals.fieldHighLightColor,pygame.Rect(0,0,self.width,self.height), 3)
+        if (self.isMovePossible == True):
+            pygame.draw.rect(self.surface,globals.fieldPossibleMoveColor,pygame.Rect(0,0,self.width,self.height), 3)
         if(self.pawn != None):
             self.surface.blit(self.pawn.draw(),(self.width / 2 - self.pawn.getSize()[0] / 2, self.height / 2 - self.pawn.getSize()[1] / 2))
         return self.surface

@@ -48,11 +48,39 @@ class Board:
             for field in column:
                 field.checkMouseHover(event, currentTurnPlayer)
 
-    def mousePressed(self, event):
-        for column in self.fieldArray2D:
-            for field in column:
-                if(field.isHovered()):
-                    return
+    def mousePressed(self, event, currentTurnPlayer):
+        for columnIndex, column in enumerate(self.fieldArray2D):
+            for rowIndex, field in enumerate(column):
+                if(field.isCurrentlyHovered()):
+                   result =  self.checkPossibleMoves(columnIndex, rowIndex, currentTurnPlayer)
+                   print(result)
+                   self.markPossibleMove(result[0][0])
+
+    def markPossibleMove(self, movePosition):
+        self.fieldArray2D[movePosition[0]][movePosition[1]].markAsPossibleMove(True)
+
+    def checkPossibleMoves(self, column, row,  currentTurnPlayer):
+        possibleMove = []
+        possibleBeats = []
+        result = []
+        if (currentTurnPlayer.getTeam() == "white"):
+            if (column  < self.columns - 1): 
+                if(self.fieldArray2D[column+1][row].getPawn() == None):
+                    possibleMove.append((column + 1, row))
+                if (row > 0):
+                    if (self.fieldArray2D[column+1][row - 1].getPawn() != None and self.fieldArray2D[column+1][row - 1].getPawn().getTeam() == "black"):
+                        possibleBeats.append((column + 1, row - 1))
+                if (row < self.rows - 1):
+                       if (self.fieldArray2D[column+1][row + 1].getPawn() != None and self.fieldArray2D[column+1][row + 1].getPawn().getTeam() == "black"):
+                        possibleBeats.append((column + 1, row + 1))
+        result.append(possibleMove)
+        result.append(possibleBeats)
+        return result
+
+    def mouseReleased(self,event, currentTurnPlayer):
+         for columnIndex, column in enumerate(self.fieldArray2D):
+            for rowIndex, field in enumerate(column):
+                field.markAsPossibleMove(False)
 
     def draw(self):
         for columnIndex,column in enumerate(self.fieldArray2D):

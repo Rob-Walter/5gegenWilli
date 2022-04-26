@@ -44,7 +44,9 @@ def main():
             elif event.type == pygame.MOUSEMOTION:
                 board.moveMouse(event, currentTurnPlayer)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                board.mousePressed(event)
+                board.mousePressed(event, currentTurnPlayer)
+            elif event.type == pygame.MOUSEBUTTONUP:
+                board.mouseReleased(event, currentTurnPlayer)
         draw_window()
 
     pygame.quit()
