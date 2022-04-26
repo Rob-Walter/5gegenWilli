@@ -2,6 +2,7 @@ import pygame
 import globals
 from board import Board
 from player import Player
+from database_controller import DB_Controller
 
 WIDTH, HEIGHT = 1200,800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
