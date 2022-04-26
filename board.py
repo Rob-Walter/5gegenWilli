@@ -1,29 +1,23 @@
 from numbers import Number
+from field import Field
+from pawn import Pawn
 import pygame
 
 class Board:
 
     WHITE = (255,255,255)
     BLACK = (0,0,0)
-    def __init__(self, surface, width: Number, height: Number, startingPointX:Number, startingPointY:Number) -> None:
+    def __init__(self, width, height) -> None:
         self.field = "field"
-        self.surface = surface
         self.width = width
         self.height = height
-        self.startingPointX = startingPointX
-        self.startingPointY = startingPointY
+        self.surface = pygame.Surface((self.width, self.height))
         self.rows = 6
         self.columns = 6
         self.fieldArray2D = []
-        for columns in range(0,self.columns):
+        for columnIndex in range(0,self.columns):
             column = []
-            for rows in range(0,self.rows):
-                column.append(self.field)
-            self.fieldArray2D.append(column)
-    
-    def draw(self):
-        for columnIndex,column in enumerate(self.fieldArray2D):
-            for rowIndex, field in enumerate(column):  
+            for rowIndex in range(0,self.rows):
                 if(columnIndex % 2 == 0):
                     if (rowIndex % 2 == 0):
                         fieldColor = self.WHITE
@@ -34,5 +28,21 @@ class Board:
                         fieldColor = self.BLACK
                     else:
                         fieldColor = self.WHITE
-                    
-                pygame.draw.rect(self.surface, fieldColor, pygame.Rect(((self.width / self.rows) * rowIndex) + self.startingPointX, ((self.height / self.columns) * columnIndex) + self.startingPointY, self.width / self.rows, self.height / self.columns ) )
+                column.append(Field(((self.width / self.rows) * rowIndex), ((self.height / self.columns) * columnIndex),(self.width / self.rows),(self.height / self.columns),fieldColor))
+            self.fieldArray2D.append(column)
+        self.initializeNewGame()
+
+    def initializeNewGame(self):
+        whitePlayerColumn = self.fieldArray2D[0]
+        for field in whitePlayerColumn:
+            field.addPawn(Pawn("white", field.getPosition()[0],field.getPosition()[1]))
+        
+        blackPlayerColumn = self.fieldArray2D[self.columns - 1]
+        for field in blackPlayerColumn:
+            field.addPawn(Pawn("black", field.getPosition()[0],field.getPosition()[1]))
+
+    def draw(self):
+        for columnIndex,column in enumerate(self.fieldArray2D):
+            for rowIndex, field in enumerate(column):  
+                self.surface.blit(field.draw(), field.getPosition())
+        return self.surface
