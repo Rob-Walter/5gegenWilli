@@ -22,5 +22,8 @@ class Pawn:
     def getSize(self):
         return (self.width, self.height)
 
+    def getTeam(self):
+        return self.team
+        
     def draw(self):
         return self.sprite

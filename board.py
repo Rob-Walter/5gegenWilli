@@ -8,7 +8,6 @@ class Board:
     WHITE = (255,255,255)
     BLACK = (0,0,0)
     def __init__(self, width, height) -> None:
-        self.field = "field"
         self.width = width
         self.height = height
         self.surface = pygame.Surface((self.width, self.height))
@@ -40,6 +39,17 @@ class Board:
         blackPlayerColumn = self.fieldArray2D[self.columns - 1]
         for field in blackPlayerColumn:
             field.addPawn(Pawn("black", field.getPosition()[0],field.getPosition()[1]))
+
+    def moveMouse(self, event, currentTurnPlayer):
+        for column in self.fieldArray2D:
+            for field in column:
+                field.checkMouseHover(event, currentTurnPlayer)
+
+    def mousePressed(self, event):
+        for column in self.fieldArray2D:
+            for field in column:
+                if(field.isHovered()):
+                    return
 
     def draw(self):
         for columnIndex,column in enumerate(self.fieldArray2D):
