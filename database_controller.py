@@ -52,13 +52,10 @@ class DB_Controller:
 
     
         
-    #def SetGameStatusOnFinished(self, game_number):
-        #sql = ""
-        #verbindung = sqlite3.connect("F:\Ausbildung Fachinformatiker\Berufsschule\Jahresprojekt\sqlite\database\datenbank.db")
-        #zeiger = verbindung.cursor()
+    #def setgamestatusoninished(self, game_number):
                 
-controller = DB_Controller()
-controller.loadfilegame(8)
+#controller = DB_Controller()
+#controller.loadfilegame(8)
 #controller.savegame()
 #controller.setnewgameintogametable(1, 1)
 #controller.insertnewplayer('test', 'test')
