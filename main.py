@@ -52,6 +52,11 @@ def main():
             elif event.type == pygame.USEREVENT:
                 if event.customType == customEvents.PLAYERMOVED:
                     switchCurrentTurnPlayer()
+                elif event.customType == customEvents.PLAYERWIN:
+                    if event.winner == "white":
+                        print("Weiß gewinnt")
+                    if event.winner == "black":
+                        print("Black gewinnt")
         draw_window()
 
     pygame.quit()

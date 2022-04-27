@@ -1,7 +1,7 @@
 from numbers import Number
 from field import Field
 from pawn import Pawn
-from customEvents import playerMoved
+from customEvents import playerMoved, createWinEvent
 import pygame
 import globals
 
@@ -117,7 +117,10 @@ class Board:
                     if(field.checkDraggedPawnHover(event)):
                         newField = field
                     field.markAsPossibleMove(False)
-                field.markAsPossibleBeat(False)
+                if(field.isMarkedAsPossiblebeat()):
+                    if(field.checkDraggedPawnHover(event)):
+                        newField = field
+                    field.markAsPossibleBeat(False)
                 if(field.isPawnCurrentlyDragged()):
                     oldField = field
                     field.stopDraggingAndDeleteSurface()
@@ -127,7 +130,31 @@ class Board:
         if(oldField and newField):
             newField.addPawn(oldField.getPawn())
             oldField.removePawn()
+            self.checkForWin()
             pygame.event.post(playerMoved)
+
+    def checkForWin(self):
+        playerWhitePawnCount = 0
+        playerBlackPawnCount = 0
+        for columnIndex, column in enumerate(self.fieldArray2D):
+            for rowIndex, field in enumerate(column):
+                if(field.getPawn() != None):
+                    pawn = field.getPawn()
+                    if(pawn.getTeam() == "white"):
+                        if(columnIndex == self.columns - 1):
+                            pygame.event.post(createWinEvent("white"))
+                            return
+                        playerWhitePawnCount += 1
+                    elif(pawn.getTeam() == "black"):
+                        if(columnIndex == 0):
+                             pygame.event.post(createWinEvent("black"))
+                             return
+                        playerBlackPawnCount += 1
+        if(playerWhitePawnCount == 0):
+            pygame.event.post(createWinEvent("black"))
+        elif(playerBlackPawnCount == 0):
+            pygame.event.post(createWinEvent("white"))
+
 
     def draw(self):
         for columnIndex,column in enumerate(self.fieldArray2D):
