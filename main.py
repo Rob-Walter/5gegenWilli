@@ -3,6 +3,7 @@ import globals
 from board import Board
 from player import Player
 from database_controller import DB_Controller
+import customEvents
 
 WIDTH, HEIGHT = 1200,800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -17,17 +18,18 @@ board = Board( BOARD_WIDTH, BOARD_HEIGHT)
 playerWhite = Player("white")
 playerBlack = Player("black")
 
-currentTurnPlayer = playerWhite
+currentTurnPlayer = playerBlack
 
 FPS = 60
 
 ORANGE = (235, 180, 52)
 
 def switchCurrentTurnPlayer():
+    global currentTurnPlayer
     if(currentTurnPlayer == playerWhite):
-        currentTurnPlayer == playerBlack
+        currentTurnPlayer = playerBlack
     else:
-        currentTurnPlayer == playerWhite
+        currentTurnPlayer = playerWhite
 
 def draw_window():
     WIN.fill(ORANGE)
@@ -45,7 +47,17 @@ def main():
             elif event.type == pygame.MOUSEMOTION:
                 board.moveMouse(event, currentTurnPlayer)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                board.mousePressed(event)
+                board.mousePressed(event, currentTurnPlayer)
+            elif event.type == pygame.MOUSEBUTTONUP:
+                board.mouseReleased(event, currentTurnPlayer)
+            elif event.type == pygame.USEREVENT:
+                if event.customType == customEvents.PLAYERMOVED:
+                    switchCurrentTurnPlayer()
+                elif event.customType == customEvents.PLAYERWIN:
+                    if event.winner == "white":
+                        print("Weiß gewinnt")
+                    if event.winner == "black":
+                        print("Black gewinnt")
         draw_window()
 
     pygame.quit()
