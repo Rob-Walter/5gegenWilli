@@ -58,7 +58,7 @@ def get_all_moves(board, color, game):
 
     for piece in board.get_all_pices(color): 
         valid_moves = board.get_valid_moves(piece) #(row, col): [pieces]
-        for move, skip in valid_move.items():
+        for move, skip in valid_moves.items():
             temp_board = deepcopy(board) # immer ein neues Board "erstellen" 
             new_board = simulate_move(piece, move, temp_board, game, skip)
             moves.append(new_board)
