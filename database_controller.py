@@ -57,8 +57,8 @@ class DB_Controller:
         #verbindung = sqlite3.connect("F:\Ausbildung Fachinformatiker\Berufsschule\Jahresprojekt\sqlite\database\datenbank.db")
         #zeiger = verbindung.cursor()
                 
-controller = DB_Controller()
-controller.loadfilegame(8)
+#controller = DB_Controller()
+#controller.loadfilegame(8)
 #controller.savegame()
 #controller.setnewgameintogametable(1, 1)
 #controller.insertnewplayer('test', 'test')
