@@ -31,6 +31,7 @@ FPS = 60
 ORANGE = (235, 180, 52)
 
 #GUI Manager
+#jeweils ein Manager für eine "Seite"
 gui_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
 test = gui_elements.createTextfeld((0,0),'tergrtergrfdtttergrfdtttergrfdtttergrfdttte<br>rgrfdtttergrfdtttergrfdtttergrfdtttergrfdttfdt',globals.textboxTypes['WARN'], gui_manager)
 #print(globals.textboxTypes['WARN'])
