@@ -7,6 +7,11 @@ fieldHighLightColor = (235, 180, 52)
 fieldPossibleMoveColor = (149, 222, 71)
 fieldPossibleBeatColor = (222, 71, 71)
 
+#GUI-Manager
+buttonTypes = {'ACCEPT': '@accept_buttons' , 'DECLINE' : '@decline_buttons'}
+textboxTypes = {'INFO':'@infotext', 'WARN': '@warntext'}
+inputTypes = {'NORMAL':'@normalinput', 'PASSWORD': '@passwordinput'}
+
 def setStartingPoints(x,y):
     global boardStartingPointX 
     global boardStartingPointY
