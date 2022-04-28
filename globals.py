@@ -6,10 +6,13 @@ boardStartingPointY = 0
 screenWidth = 0
 sreenHeight = 0
 
-# Colors
+#Colors
 fieldHighLightColor = (235, 180, 52)
 fieldPossibleMoveColor = (149, 222, 71)
 fieldPossibleBeatColor = (222, 71, 71)
+
+#User
+user = None
 
 #GUI-Manager
 buttonTypes = {'ACCEPT': '@accept_buttons' , 'DECLINE' : '@decline_buttons'}
@@ -27,3 +30,7 @@ def setScreenDimensions(width, height):
     global screenHeight
     screenWidth = width
     screenHeight = height
+
+def setUser(username, id):
+    global user
+    user = {'username': username, 'id': id}

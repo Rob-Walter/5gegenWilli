@@ -1,3 +1,4 @@
+from Scenes.mainmenue_scene import MainMenueScene
 import globals
 import pygame
 import pygame_gui
@@ -45,7 +46,7 @@ class LoginScene(Scene):
                             self.username = self.username_input.get_text()
                             self.password = self.password_input.get_text()
                             if self.login():
-                                print('eingeloggt')
+                                self.manager.goTo(MainMenueScene())
                             else:
                                 print('fehler ist aufgetreten')
                     #if event.user_type == pygame_gui.UI_TEXT_ENTRY_FINISHED: 

@@ -29,7 +29,7 @@ class GameScene(Scene):
 
         #GUI Manager
         self.gui_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
-        self.test = gui_elements.createTextfeld((0,0),'tergrtergrfdtttergrfdtttergrfdtttergrfdttte<br>rgrfdtttergrfdtttergrfdtttergrfdtttergrfdttfdt',globals.textboxTypes['WARN'], self.gui_manager)
+        self.save_game_button = gui_elements.createButton((0,0),'SAVE GAME','ACCEPT', self.gui_manager)
 
 
     def switchCurrentTurnPlayer(self):
@@ -46,6 +46,10 @@ class GameScene(Scene):
     def update(self, timeDelta):
         self.gui_manager.update(timeDelta) 
 
+    def savegame(self):
+        dbcontroller = DB_Controller()
+        dbcontroller.savefilegame(globals.user['id'],self.board)
+
     def handleEvents(self, events):
         for event in events:
             if event.type == pygame.MOUSEMOTION:
@@ -56,9 +60,10 @@ class GameScene(Scene):
                 self.board.mouseReleased(event, self.currentTurnPlayer)
             elif event.type == pygame.USEREVENT:
                 if hasattr(event, 'user_type'):
-                    if event.user_type == pygame_gui.UI_TEXT_ENTRY_FINISHED: 
-                        if event.ui_element == self.test:
-                            entered_text = self.text
+                    if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
+                        if event.ui_element == self.save_game_button:
+                            print('save game')
+                            self.savegame()
                 if hasattr(event, 'customType'):
                     if event.customType == customEvents.PLAYERMOVED:
                         self.switchCurrentTurnPlayer()

@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import globals
 from unittest import result
 from sqlite.init_database import init_command
 from board import Board
@@ -42,6 +43,8 @@ class DB_Controller:
     def checkifplayerexistinDB(self, nickname, password):
         sql = f"SELECT * FROM user_table WHERE nickname = '{nickname}' AND password = '{password}'"
         if(self.zeiger.execute(sql)):
+            id = self.zeiger.fetchone()[0]
+            globals.setUser(nickname, id)
             return True
         else:
             return False    
@@ -53,13 +56,13 @@ class DB_Controller:
         self.verbindung.commit()
         return self.zeiger.lastrowid
 
-    def savefilegame(self, board : Board):
-        id = self.setnewgameintogametable(1,1)
+    def savefilegame(self,userid, board : Board):
+        id = self.setnewgameintogametable(userid,1)
         for columnIndex,column in enumerate(board.get2dArray()):
             for rowIndex, field in enumerate(column):
                 if(field.getPawn() != None):
                     team = field.getPawn().getTeam()
-                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_row, figur_column) VALUES (1, {id}, '{team}', {rowIndex}, {columnIndex})"
+                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_row, figur_column) VALUES ({userid}, {id}, '{team}', {rowIndex}, {columnIndex})"
                     self.zeiger.execute(sql)
                     self.verbindung.commit()
 
