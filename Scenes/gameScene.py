@@ -7,7 +7,7 @@ from board import Board
 from player import Player
 from database_controller import DB_Controller
 import customEvents
-from scene import Scene
+from Scenes.scene import Scene
 
 pygame.freetype.init()
 

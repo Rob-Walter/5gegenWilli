@@ -14,9 +14,14 @@ class DB_Controller:
 
     #diese methode funkioniert
     def insertnewplayer(self, nickname, password):
-        sql = f"INSERT INTO user_table (nickname, password) VALUES ('{nickname}', '{password}')"   
-        self.zeiger.execute(sql)
+        sql = f"INSERT INTO user_table (nickname, password) VALUES ('{nickname}', '{password}')" 
+        result = self.zeiger.execute(sql)
         self.verbindung.commit()
+        if result.rowcount == 1:            
+            return True
+        else:
+            return False
+        
         
     #diese methode funkioniert
     def checkifplayerexistinDB(self, nickname, password):
