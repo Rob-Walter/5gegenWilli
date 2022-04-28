@@ -3,7 +3,7 @@ import pygame
 import pygame_gui
 import gui_elements
 from Scenes.scene import Scene
-from Scenes.gameScene import GameScene
+from Scenes.game_Scene import GameScene
 from database_controller import DB_Controller
 
 class MainMenueScene(Scene):

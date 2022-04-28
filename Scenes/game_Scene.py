@@ -28,8 +28,11 @@ class GameScene(Scene):
         self.currentTurnPlayer = self.playerWhite
 
         #GUI Manager
-        self.gui_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
-        self.save_game_button = gui_elements.createButton((0,0),'SAVE GAME','ACCEPT', self.gui_manager)
+        self.game_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
+        self.save_game_button = gui_elements.createButton((0,300),'SAVE','ACCEPT', self.game_manager)
+        self.back_game_button = gui_elements.createButton((0,350),'BACK','ACCEPT', self.game_manager)
+        self.rules_game_button = gui_elements.createButton((0,400),'RULES','ACCEPT', self.game_manager)
+        self.exit_game_button = gui_elements.createButton((0,450),'EXIT','ACCEPT', self.game_manager)
 
 
     def switchCurrentTurnPlayer(self):
@@ -41,10 +44,10 @@ class GameScene(Scene):
 
     def render(self, screen):
         screen.blit(self.board.draw(),(globals.boardStartingPointX, globals.boardStartingPointY))
-        self.gui_manager.draw_ui(screen)
+        self.game_manager.draw_ui(screen)
 
     def update(self, timeDelta):
-        self.gui_manager.update(timeDelta) 
+        self.game_manager.update(timeDelta) 
 
     def savegame(self):
         dbcontroller = DB_Controller()
@@ -64,6 +67,12 @@ class GameScene(Scene):
                         if event.ui_element == self.save_game_button:
                             print('save game')
                             self.savegame()
+                        elif event.ui_element == self.back_game_button:
+                            print('back')
+                        elif event.ui_element == self.rules_game_button:
+                            print('rules')
+                        elif event.ui_element == self.exit_game_button:
+                            print('exit')
                 if hasattr(event, 'customType'):
                     if event.customType == customEvents.PLAYERMOVED:
                         self.switchCurrentTurnPlayer()
@@ -72,4 +81,4 @@ class GameScene(Scene):
                             print("Weiß gewinnt")
                         if event.winner == "black":
                             print("Black gewinnt")
-            self.gui_manager.process_events(event)
+            self.game_manager.process_events(event)

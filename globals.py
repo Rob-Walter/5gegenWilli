@@ -16,7 +16,7 @@ user = None
 
 #GUI-Manager
 buttonTypes = {'ACCEPT': '@accept_buttons' , 'DECLINE' : '@decline_buttons'}
-textboxTypes = {'INFO':'@infotext', 'WARN': '@warntext'}
+textboxTypes = {'INFO':'@infotext', 'WARN': '@warntext', 'RULES': '@rulestext'}
 inputTypes = {'NORMAL':'@normalinput', 'PASSWORD': '@passwordinput'}
 
 def setStartingPoints(x,y):
