@@ -2,6 +2,10 @@
 boardStartingPointX = 0
 boardStartingPointY = 0
 
+#Dimensions
+screenWidth = 0
+sreenHeight = 0
+
 # Colors
 fieldHighLightColor = (235, 180, 52)
 fieldPossibleMoveColor = (149, 222, 71)
@@ -17,3 +21,9 @@ def setStartingPoints(x,y):
     global boardStartingPointY
     boardStartingPointX = x
     boardStartingPointY = y
+
+def setScreenDimensions(width, height):
+    global screenWidth
+    global screenHeight
+    screenWidth = width
+    screenHeight = height
