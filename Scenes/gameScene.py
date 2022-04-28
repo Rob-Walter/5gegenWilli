@@ -8,11 +8,12 @@ from player import Player
 from database_controller import DB_Controller
 import customEvents
 from Scenes.scene import Scene
+import minmax
 
 pygame.freetype.init()
 
 class GameScene(Scene):
-
+    
     def __init__(self) -> None:
         super().__init__()
     
@@ -35,10 +36,11 @@ class GameScene(Scene):
     def switchCurrentTurnPlayer(self):
         if(self.currentTurnPlayer == self.playerWhite):
             self.currentTurnPlayer = self.playerBlack
+            print(minmax.minimax(self.board, 4, "black"))
         else:
             self.currentTurnPlayer = self.playerWhite
 
-
+    
     def render(self, screen):
         screen.blit(self.board.draw(),(globals.boardStartingPointX, globals.boardStartingPointY))
         self.gui_manager.draw_ui(screen)
@@ -73,3 +75,4 @@ class GameScene(Scene):
                         if event.winner == "black":
                             print("Black gewinnt")
             self.gui_manager.process_events(event)
+

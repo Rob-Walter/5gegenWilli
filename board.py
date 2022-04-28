@@ -85,7 +85,7 @@ class Board:
         possibleMove = []
         possibleBeats = []
         result = []
-        if (currentTurnPlayer.getTeam() == "white"):
+        if (currentTurnPlayer.getTeam() == "white" ):
             if (column  < self.columns - 1): 
                 if(self.fieldArray2D[column+1][row].getPawn() == None):
                     possibleMove.append((column + 1, row))
@@ -174,13 +174,13 @@ class Board:
             for columnIndex, field in enumerate(column):
                 if field.getPawn() is not None:                
                     if(field.getPawn().team == "black"):
-                        if(columnIndex == self.columns - 1):
-                            return float('inf')
+                        #if(columnIndex == self.columns - 1):
+                            #return float('inf')
                         countBlack += 1
                         countBlack +=   (-(rowIndex -5)) * 10
                     if(field.getPawn().team == "white"):
-                        if(columnIndex == self.columns - 1):
-                            return float('-inf')
+                        #if(columnIndex == self.columns - 1):
+                            #return float('-inf')
                         countWhite += 1 
                         countWhite +=  rowIndex * 10
         score = countBlack - countWhite
@@ -195,4 +195,30 @@ class Board:
                         allPices.append([rowIndex, columnIndex])
         return allPices
     
-    
+    def checkPossibleMovesComp(self, column, row,  currentTurnPlayer):
+        possibleMove = []
+        possibleBeats = []
+        result = []
+        if (currentTurnPlayer == "white" ):
+            if (column  < self.columns - 1): 
+                if(self.fieldArray2D[column+1][row].getPawn() == None):
+                    possibleMove.append((column + 1, row))
+                if (row > 0):
+                    if (self.fieldArray2D[column+1][row - 1].getPawn() != None and self.fieldArray2D[column+1][row - 1].getPawn().getTeam() == "black"):
+                        possibleBeats.append((column + 1, row - 1))
+                if (row < self.rows - 1):
+                       if (self.fieldArray2D[column+1][row + 1].getPawn() != None and self.fieldArray2D[column+1][row + 1].getPawn().getTeam() == "black"):
+                        possibleBeats.append((column + 1, row + 1))
+        elif(currentTurnPlayer == "black"):
+            if (column  > 0): 
+                if(self.fieldArray2D[column - 1][row].getPawn() == None):
+                    possibleMove.append((column - 1, row))
+                if (row > 0):
+                    if (self.fieldArray2D[column - 1][row - 1].getPawn() != None and self.fieldArray2D[column - 1][row - 1].getPawn().getTeam() == "white"):
+                        possibleBeats.append((column - 1, row - 1))
+                if (row < self.rows - 1):
+                       if (self.fieldArray2D[column - 1][row + 1].getPawn() != None and self.fieldArray2D[column - 1][row + 1].getPawn().getTeam() == "white"):
+                        possibleBeats.append((column - 1, row + 1))
+        result.append(possibleMove)
+        result.append(possibleBeats)
+        return result
