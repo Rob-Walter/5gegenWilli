@@ -25,6 +25,10 @@ class LoginScene(Scene):
 
         self.login_button = gui_elements.createButton((0,260),'einloggen','ACCEPT', self.login_manager)
 
+    def login(self):
+        dbcontroller = DB_Controller()
+        return dbcontroller.checkifplayerexistinDB(self.username, self.password)
+
     def update(self, time_delta):
         self.login_manager.update(time_delta)
 
@@ -32,7 +36,6 @@ class LoginScene(Scene):
         self.login_manager.draw_ui(screen)
 
     def handleEvents(self, events):
-        dbcontroller = DB_Controller()
         for event in events:
             self.login_manager.process_events(event)
             if event.type == pygame.USEREVENT:
@@ -41,7 +44,7 @@ class LoginScene(Scene):
                         if event.ui_element == self.login_button:
                             self.username = self.username_input.get_text()
                             self.password = self.password_input.get_text()
-                            if dbcontroller.checkifplayerexistinDB(self.username, self.password):
+                            if self.login():
                                 print('eingeloggt')
                             else:
                                 print('fehler ist aufgetreten')

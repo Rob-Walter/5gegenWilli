@@ -1,6 +1,7 @@
 import sqlite3
 import os
-import sqlite.init_database
+from unittest import result
+from sqlite.init_database import init_command
 from board import Board
 
 
@@ -9,14 +10,22 @@ class DB_Controller:
     #2 methoden hinzufügen GetDb für selects und Setdb für insert, update, delete
     #diese methode funkioniert
     def __init__(self):
-        self.path = os.path.join(os.path.abspath(os.curdir),"sqlite\datenbank.db")
+        self.path = os.path.join(os.path.abspath(os.curdir),"sqlite/datenbank.db")
         self.verbindung = sqlite3.connect(self.path)
         self.zeiger = self.verbindung.cursor()
-        sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='user_table"
-        result = self.zeiger.execute(sql)
-        if result.rowcount == 0:
+        sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='user_table'"
+        result = self.zeiger.execute(sql).fetchone()
+        self.verbindung.commit()
+        if result == None:
+            self.initDatabase()
             #führe init_methode aus
+        print("End of init")
         
+    def initDatabase(self):
+        for command in init_command:
+            print(command)
+            result = self.zeiger.execute(command)
+            self.verbindung.commit()
 
     #diese methode funkioniert
     def insertnewplayer(self, nickname, password):
@@ -68,7 +77,7 @@ class DB_Controller:
         #verbindung = sqlite3.connect("F:\Ausbildung Fachinformatiker\Berufsschule\Jahresprojekt\sqlite\database\datenbank.db")
         #zeiger = verbindung.cursor()
                 
-controller = DB_Controller()
+#controller = DB_Controller()
 #controller.loadfilegame(8)
 #controller.savegame()
 #controller.setnewgameintogametable(1, 1)

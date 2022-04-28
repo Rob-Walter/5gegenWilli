@@ -25,6 +25,10 @@ class RegistrationScene(Scene):
 
         self.registration_button = gui_elements.createButton((0,260),'registrieren','ACCEPT', self.registration_manager)
 
+    def register(self):
+        dbcontroller = DB_Controller()
+        return dbcontroller.insertnewplayer(self.username, self.password)
+
     def update(self, time_delta):
         self.registration_manager.update(time_delta)
 
@@ -32,7 +36,6 @@ class RegistrationScene(Scene):
         self.registration_manager.draw_ui(screen)
 
     def handleEvents(self, events):
-        dbcontroller = DB_Controller()
         for event in events:
             self.registration_manager.process_events(event)
             if event.type == pygame.USEREVENT:
@@ -42,7 +45,7 @@ class RegistrationScene(Scene):
                             self.username = self.username_input.get_text()
                             self.password = self.password_input.get_text()
                             if len(self.username) >= 3 and len(self.password)  >= 3:
-                                if dbcontroller.insertnewplayer(self.username, self.password):
+                                if self.register():
                                     #bitte weiterleiten auf login_scene
                                     self.manager.goTo(LoginScene())
                             else:
