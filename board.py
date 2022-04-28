@@ -34,6 +34,7 @@ class Board:
             self.fieldArray2D.append(column)
         self.initializeNewGame()
 
+
     def get2dArray(self):
         return self.fieldArray2D
 
@@ -132,6 +133,7 @@ class Board:
             oldField.removePawn()
             self.checkForWin()
             pygame.event.post(playerMoved)
+        self.evaluate()
 
     def checkForWin(self):
         playerWhitePawnCount = 0
@@ -163,3 +165,23 @@ class Board:
         if(self.tempPawnSurface):
             self.surface.blit(self.tempPawnSurface[0] ,self.tempPawnSurface[1])
         return self.surface
+
+    def evaluate(self):
+        countBlack:int = 0
+        countWhite:int = 0
+        score :int = 0
+        for rowIndex, column in enumerate(self.fieldArray2D):
+            for columnIndex, field in enumerate(column):
+                if field.getPawn() is not None:                
+                    if(field.getPawn().team == "black"):
+                        if(columnIndex == self.columns - 1):
+                            return float('inf')
+                        countBlack += 1
+                        countBlack +=   (-(rowIndex -5)) * 10
+                    if(field.getPawn().team == "white"):
+                        if(columnIndex == self.columns - 1):
+                            return float('-inf')
+                        countWhite += 1 
+                        countWhite +=  rowIndex * 10
+        score = countBlack - countWhite
+        return score
