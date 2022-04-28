@@ -133,7 +133,7 @@ class Board:
             oldField.removePawn()
             self.checkForWin()
             pygame.event.post(playerMoved)
-        self.evaluate()
+       
 
     def checkForWin(self):
         playerWhitePawnCount = 0
@@ -156,7 +156,7 @@ class Board:
             pygame.event.post(createWinEvent("black"))
         elif(playerBlackPawnCount == 0):
             pygame.event.post(createWinEvent("white"))
-
+        
 
     def draw(self):
         for columnIndex,column in enumerate(self.fieldArray2D):
@@ -185,3 +185,14 @@ class Board:
                         countWhite +=  rowIndex * 10
         score = countBlack - countWhite
         return score
+
+    def get_all_pices(self, color):
+        allPices=[]
+        for rowIndex, column in enumerate(self.fieldArray2D):
+            for columnIndex, field in enumerate(column):
+                if field.getPawn() is not None:                
+                    if(field.getPawn().team == color):
+                        allPices.append([rowIndex, columnIndex])
+        return allPices
+    
+    

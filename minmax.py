@@ -55,9 +55,8 @@ def simulate_move(piece, move, board, game, skip):
 #herausfinden wo alle steine stehen und deren möglichen Züge rausfinden
 def get_all_moves(board, color, game):
     moves = []
-
-    for piece in board.get_all_pices(color): 
-        valid_moves = board.get_valid_moves(piece) #(row, col): [pieces]
+    for index, piece in enumerate(board.get_all_pices(color)):
+        valid_moves = board.checkPossibleMoves(piece[0],piece[1],color) #(row, col): [pieces]
         for move, skip in valid_moves.items():
             temp_board = deepcopy(board) # immer ein neues Board "erstellen" 
             new_board = simulate_move(piece, move, temp_board, game, skip)
