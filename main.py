@@ -1,64 +1,37 @@
 import pygame
+import pygame.freetype
 import globals
-from board import Board
-from player import Player
-from database_controller import DB_Controller
-import customEvents
+from sceneManager import SceneManager
 
 WIDTH, HEIGHT = 1200,800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+globals.setScreenDimensions(WIDTH,HEIGHT)
 pygame.display.set_caption("Bauernschach")
-
-BOARD_WIDTH, BOARD_HEIGHT = 600, 600
-
-globals.setStartingPoints((WIDTH - BOARD_WIDTH) / 2, (HEIGHT - BOARD_HEIGHT) / 2)
-
-board = Board( BOARD_WIDTH, BOARD_HEIGHT)
-
-playerWhite = Player("white")
-playerBlack = Player("black")
-
-currentTurnPlayer = playerBlack
-
 FPS = 60
-
 ORANGE = (235, 180, 52)
-
-def switchCurrentTurnPlayer():
-    global currentTurnPlayer
-    if(currentTurnPlayer == playerWhite):
-        currentTurnPlayer = playerBlack
-    else:
-        currentTurnPlayer = playerWhite
+sceneManager = SceneManager()
 
 def draw_window():
     WIN.fill(ORANGE)
-    WIN.blit(board.draw(),(globals.boardStartingPointX, globals.boardStartingPointY))
-    pygame.display.update()
+
 
 def main():
     clock = pygame.time.Clock()
     run = True
     while run:
-        clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            elif event.type == pygame.MOUSEMOTION:
-                board.moveMouse(event, currentTurnPlayer)
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                board.mousePressed(event, currentTurnPlayer)
-            elif event.type == pygame.MOUSEBUTTONUP:
-                board.mouseReleased(event, currentTurnPlayer)
-            elif event.type == pygame.USEREVENT:
-                if event.customType == customEvents.PLAYERMOVED:
-                    switchCurrentTurnPlayer()
-                elif event.customType == customEvents.PLAYERWIN:
-                    if event.winner == "white":
-                        print("Weiß gewinnt")
-                    if event.winner == "black":
-                        print("Black gewinnt")
+        time_delta = clock.tick(FPS)/1000.0
+        if pygame.event.get(pygame.QUIT):
+            run = False
+            return
+
+        sceneManager.scene.handleEvents(pygame.event.get())
+        sceneManager.scene.update(time_delta)
         draw_window()
+        sceneManager.scene.render(WIN)
+        pygame.display.update()
+       
+
+        
 
     pygame.quit()
 
