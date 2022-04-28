@@ -18,7 +18,7 @@ class RegistrationScene(Scene):
         self.registration_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
 
         self.login_label = gui_elements.createTextfeld((0,0),'Username',globals.textboxTypes['INFO'], self.registration_manager)
-        self.username_input = gui_elements.createInput((0,50),'NORMAL', self.registration_manager)
+        self.username_input = gui_elements.createInput((0,50),globals.inputTypes['NORMAL'], self.registration_manager)
 
         self.password_label = gui_elements.createTextfeld((0,150),'Password',globals.textboxTypes['INFO'], self.registration_manager)
         self.password_input = gui_elements.createInput((0,200),globals.inputTypes['PASSWORD'], self.registration_manager)
