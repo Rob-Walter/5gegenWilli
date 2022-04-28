@@ -1,4 +1,5 @@
 from copy import deepcopy
+from locale import currency
 from board import Board
 
 import pygame
@@ -22,9 +23,13 @@ def minimax(position, depth, maximizing_player): #alpha, beta
         max_eval = float('-inf') #für den MaxPlayer ist negative Unendlichekit (-inf) am besten
         best_move = None
         for move in get_all_moves(position, "black"): #Die Ki ist immer Schwarz
-            current_eval = minimax(position, depth - 1, False)[0]
+            
+            current_eval = minimax(move, depth - 1, False)[1]
+            print("current",current_eval)
+
             max_eval = max(max_eval, current_eval)
-            if current_eval == max_eval:
+            
+            if current_eval >= max_eval:
                 max_eval = current_eval
                 best_move = move
         return best_move, max_eval
@@ -32,20 +37,17 @@ def minimax(position, depth, maximizing_player): #alpha, beta
     else:
         min_eval = float('+inf') #für den MinPlayer ist positive Unendlichekit (+inf) am besten
         best_move = None
-        for move in get_all_moves(position, "WHITE"): #Der Player ist immer weiß
-            current_eval = minimax(move, depth - 1, True)[0]
+        for move in get_all_moves(position, "white"): #Der Player ist immer weiß
+            current_eval = minimax(move, depth - 1, True)[1]
             min_eval = min(min_eval, current_eval)
-            if current_eval == min_eval:
+            if current_eval <= min_eval:
                 min_eval = current_eval
                 best_move = move
         return best_move, min_eval
 
 
-def simulate_move(piece, move, board, skip):
-    board.move(piece, move[0], move[1])
-    if skip:
-        board.remove(skip)
-
+def simulate_move(piece, move, board):
+    board.move(piece, move)
     return board
 
 #herausfinden wo alle steine stehen und deren möglichen Züge rausfinden
@@ -53,11 +55,26 @@ def get_all_moves(board, color):
     moves = []
     for index, piece in enumerate(board.get_all_pices(color)):
         valid_moves = board.checkPossibleMovesComp(piece[0],piece[1],color) #(row, col): [pieces]
-        for move, skip in valid_moves.items():
-            temp_board = deepcopy(board) # immer ein neues Board "erstellen" 
-            new_board = simulate_move(piece, move, temp_board, skip)
-            moves.append(new_board)
-    
+        for item in valid_moves:
+            if(item):
+                for move in item:
+                    for rowIndex, column in enumerate(board.fieldArray2D):
+                        for columnIndex, field in enumerate(column):
+                            field.unsetSurface()
+                            if(field.getPawn()!=None):
+                                field.getPawn().unsetSprite()
+
+                    temp_surface = board.surface
+                    board.surface = None
+                    temp_board = deepcopy(board) # immer ein neues Board "erstellen" 
+                    for rowIndex, column in enumerate(board.fieldArray2D):
+                        for columnIndex, field in enumerate(column):
+                            field.setSurface()
+                            if(field.getPawn()!=None):
+                                field.getPawn().setSprite()
+                    board.surface = temp_surface
+                    new_board = simulate_move(piece, move, temp_board)
+                    moves.append(new_board)
     return moves
 
 

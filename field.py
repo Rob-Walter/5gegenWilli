@@ -6,7 +6,6 @@ from pawn import Pawn
 class Field:
     def __init__(self, x : int,y : int , width : int , height : int, color):
         self.pawn = None
-        self.surface = Surface((width,height))
         self.x = x
         self.y = y
         self.width = width
@@ -17,6 +16,7 @@ class Field:
         self.isBeatPossible = False
         self.isDraggingPawn = False
         self.boardSurface = None
+        self.setSurface()
 
     def addPawn(self,pawn : Pawn):
         self.pawn = pawn
@@ -90,3 +90,9 @@ class Field:
         if(self.pawn != None and self.isDraggingPawn != True):
             self.surface.blit(self.pawn.draw(),(self.width / 2 - self.pawn.getSize()[0] / 2, self.height / 2 - self.pawn.getSize()[1] / 2))
         return self.surface
+
+    def setSurface(self):
+        self.surface = Surface((self.width,self.height))
+
+    def unsetSurface(self):
+        self.surface = None

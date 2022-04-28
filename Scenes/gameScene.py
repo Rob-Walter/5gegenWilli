@@ -36,7 +36,7 @@ class GameScene(Scene):
     def switchCurrentTurnPlayer(self):
         if(self.currentTurnPlayer == self.playerWhite):
             self.currentTurnPlayer = self.playerBlack
-            print(minmax.minimax(self.board, 4, "black"))
+            print(minmax.minimax(self.board, 4, True))
         else:
             self.currentTurnPlayer = self.playerWhite
 

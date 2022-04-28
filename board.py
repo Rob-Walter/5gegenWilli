@@ -15,7 +15,7 @@ class Board:
         self.surface = pygame.Surface((self.width, self.height))
         self.tempPawnSurface = None
         self.rows = 6
-        self.columns = 6
+        self.columns = 2
         self.fieldArray2D = []
         for columnIndex in range(0,self.columns):
             column = []
@@ -222,3 +222,13 @@ class Board:
         result.append(possibleMove)
         result.append(possibleBeats)
         return result
+
+    
+    def move(self,piece,move):
+        print("move",move)
+        print("piece",piece)
+        tempPawn=self.fieldArray2D[piece[0]][piece[1]].getPawn()
+        self.fieldArray2D[move[0]][move[1]].addPawn(tempPawn) 
+        self.fieldArray2D[piece[0]][piece[1]].removePawn()
+
+
