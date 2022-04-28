@@ -9,7 +9,23 @@ globals.setScreenDimensions(WIDTH,HEIGHT)
 pygame.display.set_caption("Bauernschach")
 FPS = 60
 ORANGE = (235, 180, 52)
+<<<<<<< HEAD
 sceneManager = SceneManager()
+=======
+
+#GUI Manager
+#jeweils ein Manager für eine "Seite"
+gui_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
+test = gui_elements.createTextfeld((0,0),'tergrtergrfdtttergrfdtttergrfdtttergrfdttte<br>rgrfdtttergrfdtttergrfdtttergrfdtttergrfdttfdt',globals.textboxTypes['WARN'], gui_manager)
+#print(globals.textboxTypes['WARN'])
+
+def switchCurrentTurnPlayer():
+    global currentTurnPlayer
+    if(currentTurnPlayer == playerWhite):
+        currentTurnPlayer = playerBlack
+    else:
+        currentTurnPlayer = playerWhite
+>>>>>>> e6a5c20936553ac9fa202ef34cada32d1d329ea1
 
 def draw_window():
     WIN.fill(ORANGE)
