@@ -14,7 +14,7 @@ ORANGE = (235, 180, 52)
 sceneManager = SceneManager()
 
 def draw_window():
-    WIN.fill(ORANGE)
+    WIN.fill((32,140,122))
 
 
 def main():

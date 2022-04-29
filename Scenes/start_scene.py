@@ -13,10 +13,11 @@ class StartScene(Scene):
     def __init__(self):        
         self.startscene_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
 
-        self.guest_button = gui_elements.createButton((500,350),'GUEST','ACCEPT', self.startscene_manager)
-        self.login_button = gui_elements.createButton((500,400),'LOGIN','ACCEPT', self.startscene_manager)
-        self.register_button = gui_elements.createButton((500,450),'REGISTER','ACCEPT', self.startscene_manager)
-        self.exit_button = gui_elements.createButton((500,500),'EXIT','ACCEPT', self.startscene_manager)
+        self.guest_button = gui_elements.createButton((500,350),'GUEST',globals.buttonTypes['ACCEPT'], self.startscene_manager)
+        self.login_button = gui_elements.createButton((500,400),'LOGIN',globals.buttonTypes['ACCEPT'], self.startscene_manager)
+        self.register_button = gui_elements.createButton((500,450),'REGISTER',globals.buttonTypes['ACCEPT'], self.startscene_manager)
+        self.exit_button = gui_elements.createButton((500,500),'EXIT',globals.buttonTypes['ACCEPT'], self.startscene_manager)
+        
 
     def update(self, time_delta):
         self.startscene_manager.update(time_delta)

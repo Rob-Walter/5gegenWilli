@@ -14,6 +14,7 @@ class SavedGamesScene(Scene):
         self.savedGames_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
         self.savedGames = self.loadSavedGames()
         self.createSaveGameEntry(self.savedGames)
+        self.back_button = gui_elements.createButton((0,400),'BACK','ACCEPT', self.savedGames_manager)
 
     def createSaveGameEntry(self, data):
         if len(data) > 0:
@@ -55,5 +56,8 @@ class SavedGamesScene(Scene):
                             if event.ui_element == entry[0]:
                                 print(entry[1])
                                 self.loadSaveGameAndInitiliaseGame(entry[1])
+                        if event.ui_element == self.back_button:
+                            print('back')
+                            self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                                 
                      

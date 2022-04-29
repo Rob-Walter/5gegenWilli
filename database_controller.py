@@ -122,7 +122,8 @@ class DB_Controller:
             inhalt = self.zeiger.fetchall()
             leaderboardarray.append(inhalt)
 
-        print(leaderboardarray)
+        leaderboardarray.sort()
+        return leaderboardarray
     
     def sortforleaderboard(leaderboardarray):
         print(leaderboardarray)

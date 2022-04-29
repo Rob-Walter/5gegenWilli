@@ -26,9 +26,9 @@ class RegistrationScene(Scene):
         self.password_label = gui_elements.createTextfeld((500,320),'NEW PASSWORD',globals.textboxTypes['INFO'], self.registration_manager)
         self.password_input = gui_elements.createInput((500,370),globals.inputTypes['PASSWORD'], self.registration_manager)
 
-        self.registration_button = gui_elements.createButton((500,480),'REGISTER','ACCEPT', self.registration_manager)
+        self.registration_button = gui_elements.createButton((500,480),'REGISTER',globals.buttonTypes['ACCEPT'], self.registration_manager)
 
-        self.back_button = gui_elements.createButton((500,530),'BACK','ACCEPT', self.registration_manager)
+        self.back_button = gui_elements.createButton((500,530),'BACK',globals.buttonTypes['ACCEPT'], self.registration_manager)
 
     def register(self):
         dbcontroller = DB_Controller()
