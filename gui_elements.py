@@ -15,9 +15,15 @@ def createInput(pos, type,manager):
     return element
 
 def createTextfeld(pos, text, type, manager):
+<<<<<<< Updated upstream
     element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (-1, -1)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
     if type == globals.textboxTypes['RULES']:
         element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (900, 700)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
     element.rebuild()
     element.full_redraw()    
+=======
+    element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (250, 50)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
+    # element.rebuild()
+    # element.full_redraw()    
+>>>>>>> Stashed changes
     return element

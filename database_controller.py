@@ -1,7 +1,7 @@
 import sqlite3
 import os
 import globals
-from unittest import result
+from datetime import datetime
 from sqlite.init_database import init_command
 from board import Board
 
@@ -43,18 +43,27 @@ class DB_Controller:
     def checkifplayerexistinDB(self, nickname, password):
         sql = f"SELECT * FROM user_table WHERE nickname = '{nickname}' AND password = '{password}'"
         if(self.zeiger.execute(sql)):
-            id = self.zeiger.fetchone()[0]
-            globals.setUser(nickname, id)
-            return True
-        else:
-            return False    
+            result = self.zeiger.fetchone()
+            if result:
+                id = result[0]
+                globals.setUser(nickname, id)
+                return True
+            else:
+                return False    
 
     #diese methode funkioniert
-    def setnewgameintogametable(self, user_id, game_id):        
-        sql = f"INSERT INTO user_game_table (user_id, game_id, game_status) VALUES ({user_id}, {game_id}, 0)"
+    def setnewgameintogametable(self, user_id, game_id):
+        time = datetime.now().strftime("%d.%m.%Y, %H:%M:%S")      
+        sql = f"INSERT INTO user_game_table (user_id, game_id, game_status, saved_date) VALUES ({user_id}, {game_id}, 0, '{time}')"
         self.zeiger.execute(sql)
         self.verbindung.commit()
         return self.zeiger.lastrowid
+
+    def loadSavedGames(self, user_id):
+        sql = sql = f"SELECT * FROM user_game_table WHERE user_id = '{user_id}'"
+        self.zeiger.execute(sql)
+        return self.zeiger.fetchall()
+
 
     def savefilegame(self,userid, board : Board):
         id = self.setnewgameintogametable(userid,1)

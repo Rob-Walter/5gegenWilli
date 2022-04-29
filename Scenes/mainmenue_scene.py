@@ -1,3 +1,4 @@
+from Scenes.savedGamesScene import SavedGamesScene
 import globals
 import pygame
 import pygame_gui
@@ -22,6 +23,10 @@ class MainMenueScene(Scene):
         dbcontroller = DB_Controller()
         return dbcontroller.checkifplayerexistinDB(self.username, self.password)
 
+    def loadSavedGames(self):
+        dbcontroller = DB_Controller()
+        print(dbcontroller.loadSavedGames(globals.user["id"]))
+
     def update(self, time_delta):
         self.mainmenue_manager.update(time_delta)
 
@@ -38,6 +43,6 @@ class MainMenueScene(Scene):
                             print('new game')
                             self.manager.goTo(GameScene())
                         elif event.ui_element == self.load_game_button:
-                            print('load game')
+                            self.manager.goTo(SavedGamesScene())
                         elif event.ui_element == self.exit_button:
                             print('exit')
