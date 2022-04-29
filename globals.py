@@ -18,7 +18,7 @@ user = None
 saveGameNumber = None
 
 #GUI-Manager
-buttonTypes = {'ACCEPT': '@accept_buttons' , 'DECLINE' : '@decline_buttons'}
+buttonTypes = {'ACCEPT': '@accept_buttons' , 'DECLINE' : '@decline_buttons', 'STRENGTH': '@strength_buttons'}
 textboxTypes = {'INFO':'@infotext', 'WARN': '@warntext', 'RULES': '@rulestext', 'HEADER': '@headertext'}
 inputTypes = {'NORMAL':'@normalinput', 'PASSWORD': '@passwordinput'}
 

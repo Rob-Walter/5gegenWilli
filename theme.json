@@ -76,7 +76,8 @@
         {
             "text_vert_alignment": "center",
             "text_horz_aligment": "center",
-            "enable_arrow_buttons": 0
+            "enable_arrow_buttons": 0,
+            "padding": "75,5"
         }
 
 

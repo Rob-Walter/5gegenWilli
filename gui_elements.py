@@ -1,3 +1,4 @@
+from xml.dom.minidom import Element
 import globals
 import pygame
 import pygame_gui
@@ -16,11 +17,15 @@ def createTextfeld(pos, text, type, manager):
     if type == globals.textboxTypes['INFO']:
         element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (130, 50)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
     elif type == globals.textboxTypes['RULES']:
-        element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (800, 400)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
+        element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (900, 500)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
     elif len(text) == 1:
         element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (30, 30)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
         #element.disable() #disables the scroll bar
         #element.kill()
     #element.rebuild()
     #element.full_redraw()
+    return element
+
+def createdropwdown(pos, optionslist, manager):
+    element = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(pos, (100, 50)),options_list=optionslist, starting_option='easy', manager=manager)
     return element

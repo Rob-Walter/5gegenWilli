@@ -4,6 +4,7 @@ from Scenes.game_Scene import GameScene
 import globals
 from sceneManager import SceneManager
 
+pygame.init()
 WIDTH, HEIGHT = 1200,800
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 globals.setScreenDimensions(WIDTH,HEIGHT)

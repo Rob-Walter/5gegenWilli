@@ -20,15 +20,15 @@ class RegistrationScene(Scene):
         
         self.registration_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
 
-        self.login_label = gui_elements.createTextfeld((400,200),'USERNAME',globals.textboxTypes['INFO'], self.registration_manager)
-        self.username_input = gui_elements.createInput((400,250),globals.inputTypes['NORMAL'], self.registration_manager)
+        self.login_label = gui_elements.createTextfeld((500,200),'NEW USERNAME',globals.textboxTypes['INFO'], self.registration_manager)
+        self.username_input = gui_elements.createInput((500,250),globals.inputTypes['NORMAL'], self.registration_manager)
 
-        self.password_label = gui_elements.createTextfeld((400,350),'PASSWORD',globals.textboxTypes['INFO'], self.registration_manager)
-        self.password_input = gui_elements.createInput((400,400),globals.inputTypes['PASSWORD'], self.registration_manager)
+        self.password_label = gui_elements.createTextfeld((500,320),'NEW PASSWORD',globals.textboxTypes['INFO'], self.registration_manager)
+        self.password_input = gui_elements.createInput((500,370),globals.inputTypes['PASSWORD'], self.registration_manager)
 
-        self.registration_button = gui_elements.createButton((400,480),'REGISTER','ACCEPT', self.registration_manager)
+        self.registration_button = gui_elements.createButton((500,480),'REGISTER','ACCEPT', self.registration_manager)
 
-        self.back_button = gui_elements.createButton((400,540),'BACK','ACCEPT', self.registration_manager)
+        self.back_button = gui_elements.createButton((500,530),'BACK','ACCEPT', self.registration_manager)
 
     def register(self):
         dbcontroller = DB_Controller()

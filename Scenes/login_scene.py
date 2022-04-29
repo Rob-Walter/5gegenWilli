@@ -19,15 +19,15 @@ class LoginScene(Scene):
         
         self.login_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
 
-        self.login_label = gui_elements.createTextfeld((0,0),'USERNAME',globals.textboxTypes['INFO'], self.login_manager)
-        self.username_input = gui_elements.createInput((0,50),globals.inputTypes['NORMAL'], self.login_manager)
+        self.login_label = gui_elements.createTextfeld((500,200),'USERNAME',globals.textboxTypes['INFO'], self.login_manager)
+        self.username_input = gui_elements.createInput((500,250),globals.inputTypes['NORMAL'], self.login_manager)
 
-        self.password_label = gui_elements.createTextfeld((0,150),'PASSWORD',globals.textboxTypes['INFO'], self.login_manager)
-        self.password_input = gui_elements.createInput((0,200),globals.inputTypes['PASSWORD'], self.login_manager)
+        self.password_label = gui_elements.createTextfeld((500,320),'PASSWORD',globals.textboxTypes['INFO'], self.login_manager)
+        self.password_input = gui_elements.createInput((500,370),globals.inputTypes['PASSWORD'], self.login_manager)
 
-        self.login_button = gui_elements.createButton((0,260),'LOGIN','ACCEPT', self.login_manager)
+        self.login_button = gui_elements.createButton((500,480),'LOGIN','ACCEPT', self.login_manager)
 
-        self.back_button = gui_elements.createButton((0,310),'BACK','ACCEPT', self.login_manager)
+        self.back_button = gui_elements.createButton((500,530),'BACK','ACCEPT', self.login_manager)
 
     def login(self):
         dbcontroller = DB_Controller()

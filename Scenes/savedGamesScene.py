@@ -34,7 +34,9 @@ class SavedGamesScene(Scene):
     def loadSaveGameAndInitiliaseGame(self,gameNumber):
         dbcontroller = DB_Controller()
         result = dbcontroller.loadSaveFileGame(globals.user["id"],gameNumber)
-        self.manager.goTo(Scenes.game_Scene.GameScene(True,result))
+        ki_strength = result[0][6]
+        self.manager.goTo(Scenes.game_Scene.GameScene(True,ki_strength,result))
+
 
     def update(self, time_delta):
         self.savedGames_manager.update(time_delta)

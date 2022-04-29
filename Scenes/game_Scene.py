@@ -15,7 +15,7 @@ pygame.freetype.init()
 
 class GameScene(Scene):
 
-    def __init__(self, isLoaded, loadData = None) -> None:
+    def __init__(self, isLoaded, ki_strength, loadData = None) -> None:
         super().__init__()
         if not isLoaded:
             globals.unsetGameNumber()
@@ -29,6 +29,13 @@ class GameScene(Scene):
         self.playerBlack = Player("black")
         self.playerWhiteMovable = True
         self.playerBlackMovable = True
+        self.ki_strength = ki_strength
+        if ki_strength == 'easy':
+            self.ki = 1
+        elif ki_strength == 'medium':
+            self.ki = 2
+        elif ki_strength == 'hard':
+            self.ki = 3
 
         # if isLoaded:
         #     if loadData[0][5] == "white":
@@ -41,10 +48,14 @@ class GameScene(Scene):
 
         #GUI Manager
         self.game_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
-        self.save_game_button = gui_elements.createButton((0,300),'SAVE','ACCEPT', self.game_manager)
+        if globals.user != None:
+            self.save_game_button = gui_elements.createButton((0,300),'SAVE','ACCEPT', self.game_manager)
         self.back_game_button = gui_elements.createButton((0,350),'BACK','ACCEPT', self.game_manager)
         self.rules_game_button = gui_elements.createButton((0,400),'RULES','ACCEPT', self.game_manager)
         self.exit_game_button = gui_elements.createButton((0,450),'EXIT','ACCEPT', self.game_manager)
+        self.rules_label = gui_elements.createTextfeld((200,150),"Bauernschach ist eine Variante des Schachs nur mit Bauern und auf einem <br>6x6 Feld. Schwarze sowie weiße Figuren stehen dabei an der <br>gegenüberliegenden Grundlinie. Die Farbe weiß beginnt den Zug, danach folgen die <br>schwarzen Figuren. Zwei Züge sind erlaubt: Ein Bauer darf nach vorne <br>ziehen wenn das vordere Feld frei ist. Es muss dabei in die Richtung <br>der gegnerischen Grundlinie bewegen. Schlagen darf der Bauer in Richtung der <br>gegnerischen Grundlinie durch diagonales Ziehen in Richtung der gegnerischen Grundlinie, <br>aber auch nur wenn auf diesem Feld ein gegnerischer Bauer steht. <br>Der “geschlagene” Bauer wird vom Spielbrett genommen. Gewonnen hat man das <br>Spiel wenn man einen eigenen Bauern auf die gegnerische Grundlinie platziert. <br>Die Farbe die dies erreicht, ist der Sieger. Wenn ein Spieler weder Züge oder Figuren <br>hat zählt das Spiel für ihn verloren. In dieser Variante des <br>Bauernschachs gibt es kein Unentschieden.",globals.textboxTypes['RULES'], self.game_manager)
+        self.rules_label.visible=0
+        self.strength_label = gui_elements.createTextfeld((0,150),self.ki_strength,globals.textboxTypes['INFO'], self.game_manager)
 
 
     def switchCurrentTurnPlayer(self):
@@ -53,7 +64,7 @@ class GameScene(Scene):
 
         elif self.currentTurnPlayer == self.playerWhite and self.playerBlackMovable or not self.playerWhiteMovable:
             self.currentTurnPlayer = self.playerBlack
-            result = minmax.minimax(self.board,None,None, 3, True)
+            result = minmax.minimax(self.board,None,None, self.ki, True)
             print("RESULT: ", result)
             self.board.move(result[2],result[3])
             self.board.checkForWinOrDraw()
@@ -69,7 +80,7 @@ class GameScene(Scene):
 
     def savegame(self):
         dbcontroller = DB_Controller()
-        dbcontroller.savefilegame(globals.user['id'],self.board, self.currentTurnPlayer.getTeam())
+        dbcontroller.savefilegame(globals.user['id'],self.board, self.currentTurnPlayer.getTeam(), self.ki_strength)
 
     def handleEvents(self, events):
         for event in events:
@@ -82,17 +93,22 @@ class GameScene(Scene):
             elif event.type == pygame.USEREVENT:
                 if hasattr(event, 'user_type'):
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        if event.ui_element == self.save_game_button:
-                            print('save game')
-                            self.savegame()
-                        elif event.ui_element == self.back_game_button:
+                        if event.ui_element == self.back_game_button:
                             print('back')
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                         elif event.ui_element == self.rules_game_button:
-                            print('rules')
+                            if self.rules_label.visible == 0:
+                                print('rules on')
+                                self.rules_label.visible = 1
+                            elif self.rules_label.visible == 1:
+                                print('rules off')
+                                self.rules_label.visible = 0
                         elif event.ui_element == self.exit_game_button:
                             print('exit')
                             pygame.quit()
+                        elif event.ui_element == self.save_game_button:
+                            print('save game')
+                            self.savegame()
                 if hasattr(event, 'customType'):
                     if event.customType == customEvents.PLAYERMOVED:
                         self.switchCurrentTurnPlayer()

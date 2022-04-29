@@ -65,7 +65,7 @@ class DB_Controller:
         return self.zeiger.fetchall()
 
 
-    def savefilegame(self,userid, board : Board, currentplayer):
+    def savefilegame(self,userid, board : Board, currentplayer, ki_strength):
         id = None
         if globals.saveGameNumber != None:
             sql = f"DELETE FROM savefile_table WHERE game_number = {globals.saveGameNumber}"
@@ -82,7 +82,7 @@ class DB_Controller:
             for rowIndex, field in enumerate(column):
                 if(field.getPawn() != None):
                     team = field.getPawn().getTeam()
-                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_column, figur_row, current_player) VALUES ({userid}, {id}, '{team}', {columnIndex}, {rowIndex}, '{currentplayer}')"
+                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_column, figur_row, current_player, ki_strength) VALUES ({userid}, {id}, '{team}', {columnIndex}, {rowIndex}, '{currentplayer}', '{ki_strength}')"
                     self.zeiger.execute(sql)
                     self.verbindung.commit()
 
@@ -106,9 +106,32 @@ class DB_Controller:
         inhalt = self.zeiger.fetchall()
         print(inhalt)
 
+    def getleaderboard(self, ki_strength):
+        userarry = []
+        leaderboardarray = []
+        sql = f"SELECT user_id FROM user_table"
+        self.zeiger.execute(sql)
+        inhalt = self.zeiger.fetchall()
+
+        for i in inhalt:
+            userarry.append(i[0])
+
+        for e in userarry:
+            sql = f"SELECT ut.nickname ,SUM(lt.win) as WINS, SUM(lt.loss) as LOSSES FROM leaderboard_table lt INNER JOIN user_table ut ON lt.user_id = ut.user_id WHERE lt.ki_strength = '{ki_strength}' AND ut.user_id = '{e}'"
+            self.zeiger.execute(sql)
+            inhalt = self.zeiger.fetchall()
+            leaderboardarray.append(inhalt)
+
+        print(leaderboardarray)
+    
+    def sortforleaderboard(leaderboardarray):
+        print(leaderboardarray)
+
+
+
                 
-#controller = DB_Controller()
-#controller.loadfilegame(8)
+controller = DB_Controller()
+controller.getleaderboard('easy')
 #controller.savegame()
 #controller.setnewgameintogametable(1, 1)
 #controller.insertnewplayer('test', 'test')
