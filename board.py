@@ -248,8 +248,8 @@ class Board:
 
     
     def move(self,piece,move):
-        print("move",move)
-        print("piece",piece)
+        #print("move",move)
+        #print("piece",piece)
         tempPawn=self.fieldArray2D[piece[0]][piece[1]].getPawn()
         self.fieldArray2D[move[0]][move[1]].addPawn(tempPawn) 
         self.fieldArray2D[piece[0]][piece[1]].removePawn()

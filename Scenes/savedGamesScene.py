@@ -3,7 +3,7 @@ import pygame
 import pygame_gui
 import gui_elements
 from Scenes.scene import Scene
-from Scenes.game_Scene import GameScene
+import Scenes.game_Scene
 from database_controller import DB_Controller
 
 class SavedGamesScene(Scene):
@@ -18,8 +18,9 @@ class SavedGamesScene(Scene):
     def createSaveGameEntry(self, data):
         if len(data) > 0:
             for entryIndex, entry in enumerate(data):
+                print(data)
                 positionY = entryIndex * 60
-                dateTextBox =gui_elements.createTextfeld((0,positionY), entry[4], globals.textboxTypes['INFO'],self.savedGames_manager)
+                dateTextBox =gui_elements.createTextfeld((0,positionY), entry[3], globals.textboxTypes['INFO'],self.savedGames_manager)
                 loadEntryButton = gui_elements.createButton((260,positionY),"Spielstand laden",globals.buttonTypes["ACCEPT"],self.savedGames_manager)
                 self.ButtonListWithGameNumber.append((loadEntryButton, entry[0]))
         else:
@@ -33,7 +34,7 @@ class SavedGamesScene(Scene):
     def loadSaveGameAndInitiliaseGame(self,gameNumber):
         dbcontroller = DB_Controller()
         result = dbcontroller.loadSaveFileGame(globals.user["id"],gameNumber)
-        self.manager.goTo(GameScene(True,result))
+        self.manager.goTo(Scenes.game_Scene.GameScene(True,result))
 
     def update(self, time_delta):
         self.savedGames_manager.update(time_delta)

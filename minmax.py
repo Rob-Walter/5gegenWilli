@@ -26,7 +26,7 @@ def minimax(initialBoard,piece, initialMove, depth, maximizing_player): #alpha, 
         for move in get_all_moves(initialBoard, "black"): #Die Ki ist immer Schwarz
             
             current_eval = minimax(move[0],move[1],move[2], depth - 1, False)
-            print("current - max",current_eval)
+            #print("current - max",current_eval)
 
             max_eval = max(max_eval, current_eval[1])
             
@@ -43,7 +43,7 @@ def minimax(initialBoard,piece, initialMove, depth, maximizing_player): #alpha, 
         bestmove = None
         for move in get_all_moves(initialBoard, "white"): #Der Player ist immer weiß
             current_eval = minimax(move[0],move[1],move[2], depth - 1, True)
-            print("current - min",current_eval)
+            #print("current - min",current_eval)
             min_eval = min(min_eval, current_eval[1])
             if current_eval[1] == min_eval:
                 min_eval = current_eval[1]

@@ -111,5 +111,5 @@ class GameScene(Scene):
                             self.playerWhiteMovable = False
                         if event.immobilzedPlayer == "black":
                             self.playerBlackMovable = False
-            self.gui_manager.process_events(event)
+            self.game_manager.process_events(event)
 
