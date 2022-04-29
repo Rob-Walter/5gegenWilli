@@ -41,7 +41,7 @@ class MainMenueScene(Scene):
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.new_game_button:
                             print('new game')
-                            self.manager.goTo(GameScene())
+                            self.manager.goTo(GameScene(False))
                         elif event.ui_element == self.load_game_button:
                             self.manager.goTo(SavedGamesScene())
                         elif event.ui_element == self.exit_button:

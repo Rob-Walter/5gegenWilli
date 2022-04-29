@@ -6,7 +6,7 @@ from Scenes.rules_scene import RulesScene
 
 class SceneManager(object):
     def __init__(self) -> None:
-        self.goTo(RulesScene())
+        self.goTo(RegistrationScene())
 
     def goTo(self,scene):
         self.scene = scene

@@ -13,18 +13,25 @@ pygame.freetype.init()
 
 class GameScene(Scene):
 
-    def __init__(self) -> None:
+    def __init__(self, isLoaded, loadData = None) -> None:
         super().__init__()
     
         self.BOARD_WIDTH, self.BOARD_HEIGHT = 600, 600
 
         globals.setStartingPoints((globals.screenWidth - self.BOARD_WIDTH) / 2, (globals.screenHeight - self.BOARD_HEIGHT) / 2)
 
-        self.board = Board( self.BOARD_WIDTH, self.BOARD_HEIGHT)
+        self.board = Board( self.BOARD_WIDTH, self.BOARD_HEIGHT, isLoaded, loadData)
 
         self.playerWhite = Player("white")
         self.playerBlack = Player("black")
 
+        # if isLoaded:
+        #     if loadData[0][5] == "white":
+        #         self.currentTurnPlayer = self.playerWhite
+        #     else:
+        #         self.currentTurnPlayer = self.playerBlack
+        # else:
+        #     self.currentTurnPlayer = self.playerWhite
         self.currentTurnPlayer = self.playerWhite
 
         #GUI Manager

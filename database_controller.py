@@ -71,10 +71,14 @@ class DB_Controller:
             for rowIndex, field in enumerate(column):
                 if(field.getPawn() != None):
                     team = field.getPawn().getTeam()
-                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_row, figur_column) VALUES ({userid}, {id}, '{team}', {rowIndex}, {columnIndex})"
+                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_column, figur_row) VALUES ({userid}, {id}, '{team}', {columnIndex} , {rowIndex})"
                     self.zeiger.execute(sql)
                     self.verbindung.commit()
-    
+
+    def loadSaveFileGame(self,userId, gameNumber):
+        sql = f"SELECT * FROM savefile_table WHERE game_number = {gameNumber} AND user_id = {userId}"
+        return self.zeiger.execute(sql).fetchall()
+
     def setgamestatusonfinished(self, game_number):
         sql = f"UPDATE user_game_table SET game_status = 1 WHERE game_number = {game_number}"
         result = self.zeiger.execute(sql)
