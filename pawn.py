@@ -11,13 +11,8 @@ class Pawn:
         self.height = self.HEIGHT
         self.x = x
         self.y = y
+        self.setSprite()
 
-        if(team == "white"):
-            self.sprite = pygame.image.load(os.path.join("assets", "pawn_white.png"))
-        elif(team == "black"):
-            self.sprite = pygame.image.load(os.path.join("assets", "pawn_black.png"))
-
-        self.sprite = pygame.transform.scale(self.sprite, self.getSize())
 
     def getSize(self):
         return (self.width, self.height)
@@ -27,3 +22,13 @@ class Pawn:
         
     def draw(self):
         return self.sprite
+    
+    def setSprite(self):
+        if(self.team == "white"):
+            self.sprite = pygame.image.load(os.path.join("assets", "pawn_white.png"))
+        elif(self.team == "black"):
+            self.sprite = pygame.image.load(os.path.join("assets", "pawn_black.png"))
+        self.sprite = pygame.transform.scale(self.sprite, self.getSize())
+
+    def unsetSprite(self):
+        self.sprite = None

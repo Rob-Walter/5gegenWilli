@@ -5,7 +5,11 @@ import pygame
 import pygame_gui
 import gui_elements
 from Scenes.scene import Scene
+<<<<<<< HEAD
 import Scenes.game_Scene
+=======
+import Scenes.gameScene
+>>>>>>> integrated_algorithm
 from database_controller import DB_Controller
 
 class MainMenueScene(Scene):
@@ -43,7 +47,11 @@ class MainMenueScene(Scene):
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.new_game_button:
                             print('new game')
+<<<<<<< HEAD
                             self.manager.goTo(Scenes.game_Scene.GameScene(False))
+=======
+                            self.manager.goTo(Scenes.gameScene.GameScene())
+>>>>>>> integrated_algorithm
                         elif event.ui_element == self.load_game_button:
                             self.manager.goTo(SavedGamesScene())
                         elif event.ui_element == self.leaderboard_button:

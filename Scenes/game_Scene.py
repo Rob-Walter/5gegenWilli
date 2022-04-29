@@ -1,6 +1,7 @@
 import pygame
 import pygame.freetype
 import pygame_gui
+import Scenes.mainmenue_scene
 import globals
 import gui_elements
 from board import Board
@@ -8,13 +9,22 @@ from player import Player
 from database_controller import DB_Controller
 import customEvents
 from Scenes.scene import Scene
+<<<<<<< HEAD:Scenes/game_Scene.py
 import Scenes.mainmenue_scene
+=======
+import minmax
+>>>>>>> integrated_algorithm:Scenes/gameScene.py
 
 pygame.freetype.init()
 
 class GameScene(Scene):
+<<<<<<< HEAD:Scenes/game_Scene.py
 
     def __init__(self, isLoaded, loadData = None) -> None:
+=======
+    
+    def __init__(self) -> None:
+>>>>>>> integrated_algorithm:Scenes/gameScene.py
         super().__init__()
         if not isLoaded:
             globals.unsetGameNumber()
@@ -26,6 +36,8 @@ class GameScene(Scene):
 
         self.playerWhite = Player("white")
         self.playerBlack = Player("black")
+        self.playerWhiteMovable = True
+        self.playerBlackMovable = True
 
         # if isLoaded:
         #     if loadData[0][5] == "white":
@@ -45,12 +57,18 @@ class GameScene(Scene):
 
 
     def switchCurrentTurnPlayer(self):
-        if(self.currentTurnPlayer == self.playerWhite):
-            self.currentTurnPlayer = self.playerBlack
-        else:
+        if self.currentTurnPlayer == self.playerBlack and self.playerWhiteMovable or not self.playerBlackMovable:
             self.currentTurnPlayer = self.playerWhite
 
+        elif self.currentTurnPlayer == self.playerWhite and self.playerBlackMovable or not self.playerWhiteMovable:
+            self.currentTurnPlayer = self.playerBlack
+            result = minmax.minimax(self.board,None,None, 3, True)
+            print("RESULT: ", result)
+            self.board.move(result[2],result[3])
+            self.board.checkForWinOrDraw()
+            self.switchCurrentTurnPlayer()    
 
+    
     def render(self, screen):
         screen.blit(self.board.draw(),(globals.boardStartingPointX, globals.boardStartingPointY))
         self.game_manager.draw_ui(screen)
@@ -90,6 +108,21 @@ class GameScene(Scene):
                     elif event.customType == customEvents.PLAYERWIN:
                         if event.winner == "white":
                             print("Weiß gewinnt")
+                            self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                         if event.winner == "black":
                             print("Black gewinnt")
+<<<<<<< HEAD:Scenes/game_Scene.py
             self.game_manager.process_events(event)
+=======
+                            self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
+                    elif event.customType == customEvents.DRAW:
+                        print("Unentschieden")
+                        self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
+                    elif event.customType == customEvents.IMMOBILIZED:
+                        if event.immobilzedPlayer == "white":
+                            self.playerWhiteMovable = False
+                        if event.immobilzedPlayer == "black":
+                            self.playerBlackMovable = False
+            self.gui_manager.process_events(event)
+
+>>>>>>> integrated_algorithm:Scenes/gameScene.py
