@@ -14,6 +14,9 @@ fieldPossibleBeatColor = (222, 71, 71)
 #User
 user = None
 
+# Savegame
+saveGameNumber = None
+
 #GUI-Manager
 buttonTypes = {'ACCEPT': '@accept_buttons' , 'DECLINE' : '@decline_buttons'}
 textboxTypes = {'INFO':'@infotext', 'WARN': '@warntext', 'RULES': '@rulestext'}
@@ -34,3 +37,11 @@ def setScreenDimensions(width, height):
 def setUser(username, id):
     global user
     user = {'username': username, 'id': id}
+
+def setSaveGameNumber(gamenumber):
+    global saveGameNumber
+    saveGameNumber = gamenumber
+
+def unsetGameNumber():
+    global saveGameNumber
+    saveGameNumber = None

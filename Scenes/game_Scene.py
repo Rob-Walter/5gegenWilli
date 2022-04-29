@@ -15,7 +15,8 @@ class GameScene(Scene):
 
     def __init__(self, isLoaded, loadData = None) -> None:
         super().__init__()
-    
+        if not isLoaded:
+            globals.unsetGameNumber()
         self.BOARD_WIDTH, self.BOARD_HEIGHT = 600, 600
 
         globals.setStartingPoints((globals.screenWidth - self.BOARD_WIDTH) / 2, (globals.screenHeight - self.BOARD_HEIGHT) / 2)

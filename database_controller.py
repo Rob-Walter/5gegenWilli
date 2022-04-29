@@ -66,7 +66,18 @@ class DB_Controller:
 
 
     def savefilegame(self,userid, board : Board):
-        id = self.setnewgameintogametable(userid,1)
+        id = None
+        if globals.saveGameNumber != None:
+            sql = f"DELETE FROM savefile_table WHERE game_number = {globals.saveGameNumber}"
+            self.zeiger.execute(sql)
+            time = datetime.now().strftime("%d.%m.%Y, %H:%M:%S")  
+            timesql = f"UPDATE user_game_table SET saved_date = '{time}' WHERE game_number= {globals.saveGameNumber} and user_id = {userid}"
+            self.zeiger.execute(timesql)
+            self.verbindung.commit()
+            id = globals.saveGameNumber
+        else:
+            id = self.setnewgameintogametable(userid,1)
+            globals.setSaveGameNumber(id)
         for columnIndex,column in enumerate(board.get2dArray()):
             for rowIndex, field in enumerate(column):
                 if(field.getPawn() != None):
@@ -76,6 +87,7 @@ class DB_Controller:
                     self.verbindung.commit()
 
     def loadSaveFileGame(self,userId, gameNumber):
+        globals.setSaveGameNumber(gameNumber)
         sql = f"SELECT * FROM savefile_table WHERE game_number = {gameNumber} AND user_id = {userId}"
         return self.zeiger.execute(sql).fetchall()
 
