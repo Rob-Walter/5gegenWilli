@@ -52,9 +52,9 @@ class DB_Controller:
                 return False    
 
     #diese methode funkioniert
-    def setnewgameintogametable(self, user_id, game_id):
+    def setnewgameintogametable(self, user_id):
         time = datetime.now().strftime("%d.%m.%Y, %H:%M:%S")
-        sql = f"INSERT INTO user_game_table (user_id, game_id, game_status, saved_date) VALUES ({user_id}, {game_id}, 0, '{time}')"
+        sql = f"INSERT INTO user_game_table (user_id,game_status, saved_date) VALUES ({user_id}, 0, '{time}')"
         self.zeiger.execute(sql)
         self.verbindung.commit()
         return self.zeiger.lastrowid
@@ -76,7 +76,7 @@ class DB_Controller:
             self.verbindung.commit()
             id = globals.saveGameNumber
         else:
-            id = self.setnewgameintogametable(userid,1)
+            id = self.setnewgameintogametable(userid)
             globals.setSaveGameNumber(id)
         for columnIndex,column in enumerate(board.get2dArray()):
             for rowIndex, field in enumerate(column):
@@ -106,13 +106,6 @@ class DB_Controller:
         inhalt = self.zeiger.fetchall()
         print(inhalt)
 
-
-    
-        
-    #def SetGameStatusOnFinished(self, game_number):
-        #sql = ""
-        #verbindung = sqlite3.connect("F:\Ausbildung Fachinformatiker\Berufsschule\Jahresprojekt\sqlite\database\datenbank.db")
-        #zeiger = verbindung.cursor()
                 
 #controller = DB_Controller()
 #controller.loadfilegame(8)
