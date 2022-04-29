@@ -9,22 +9,13 @@ from player import Player
 from database_controller import DB_Controller
 import customEvents
 from Scenes.scene import Scene
-<<<<<<< HEAD:Scenes/game_Scene.py
-import Scenes.mainmenue_scene
-=======
 import minmax
->>>>>>> integrated_algorithm:Scenes/gameScene.py
 
 pygame.freetype.init()
 
 class GameScene(Scene):
-<<<<<<< HEAD:Scenes/game_Scene.py
 
     def __init__(self, isLoaded, loadData = None) -> None:
-=======
-    
-    def __init__(self) -> None:
->>>>>>> integrated_algorithm:Scenes/gameScene.py
         super().__init__()
         if not isLoaded:
             globals.unsetGameNumber()
@@ -111,9 +102,6 @@ class GameScene(Scene):
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                         if event.winner == "black":
                             print("Black gewinnt")
-<<<<<<< HEAD:Scenes/game_Scene.py
-            self.game_manager.process_events(event)
-=======
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                     elif event.customType == customEvents.DRAW:
                         print("Unentschieden")
@@ -125,4 +113,3 @@ class GameScene(Scene):
                             self.playerBlackMovable = False
             self.gui_manager.process_events(event)
 
->>>>>>> integrated_algorithm:Scenes/gameScene.py
