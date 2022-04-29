@@ -1,5 +1,6 @@
 import pygame
 import pygame.freetype
+from Scenes.game_Scene import GameScene
 import globals
 from sceneManager import SceneManager
 
