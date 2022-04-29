@@ -9,7 +9,7 @@ class Board:
 
     WHITE = (255,255,255)
     BLACK = (0,0,0)
-    def __init__(self, width, height) -> None:
+    def __init__(self, width, height, isLoaded, loadData = None) -> None:
         self.width = width
         self.height = height
         self.surface = pygame.Surface((self.width, self.height))
@@ -32,7 +32,11 @@ class Board:
                         fieldColor = self.WHITE
                 column.append(Field(((self.width / self.rows) * rowIndex), ((self.height / self.columns) * columnIndex),(self.width / self.rows),(self.height / self.columns),fieldColor))
             self.fieldArray2D.append(column)
-        self.initializeNewGame()
+
+        if not isLoaded:
+            self.initializeNewGame()
+        else:
+            self.initializeLoadGame(loadData)
 
     def get2dArray(self):
         return self.fieldArray2D
@@ -45,6 +49,11 @@ class Board:
         blackPlayerColumn = self.fieldArray2D[self.columns - 1]
         for field in blackPlayerColumn:
             field.addPawn(Pawn("black", field.getPosition()[0],field.getPosition()[1]))
+
+    def initializeLoadGame(self, pawnArray):
+        for pawn in pawnArray:
+            field = self.fieldArray2D[pawn[3]][pawn[4]]
+            field.addPawn(Pawn(pawn[2], field.getPosition()[0],field.getPosition()[1]))
 
     def moveMouse(self, event, currentTurnPlayer):
         for column in self.fieldArray2D:
