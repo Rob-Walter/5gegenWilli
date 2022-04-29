@@ -3,10 +3,12 @@ from Scenes.login_scene import LoginScene
 from Scenes.registration_scene import RegistrationScene
 from Scenes.mainmenue_scene import MainMenueScene
 from Scenes.rules_scene import RulesScene
+from Scenes.leaderboard_scene import LeaderboardScene
+from Scenes.start_scene import StartScene
 
 class SceneManager(object):
     def __init__(self) -> None:
-        self.goTo(RulesScene())
+        self.goTo(StartScene())
 
     def goTo(self,scene):
         self.scene = scene

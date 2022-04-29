@@ -3,7 +3,7 @@ import pygame
 import pygame_gui
 import gui_elements
 from Scenes.scene import Scene
-from Scenes.gameScene import GameScene
+import Scenes.game_Scene
 from database_controller import DB_Controller
 
 class SavedGamesScene(Scene):
@@ -41,7 +41,7 @@ class SavedGamesScene(Scene):
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.new_game_button:
                             print('new game')
-                            self.manager.goTo(GameScene())
+                            self.manager.goTo(Scenes.game_Scene.GameScene())
                         elif event.ui_element == self.load_game_button:
                             self.loadSavedGames()
                         elif event.ui_element == self.exit_button:

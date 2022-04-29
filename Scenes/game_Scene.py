@@ -8,6 +8,7 @@ from player import Player
 from database_controller import DB_Controller
 import customEvents
 from Scenes.scene import Scene
+import Scenes.mainmenue_scene
 
 pygame.freetype.init()
 
@@ -51,7 +52,7 @@ class GameScene(Scene):
 
     def savegame(self):
         dbcontroller = DB_Controller()
-        dbcontroller.savefilegame(globals.user['id'],self.board)
+        dbcontroller.savefilegame(globals.user['id'],self.board, self.currentTurnPlayer.getTeam())
 
     def handleEvents(self, events):
         for event in events:
@@ -69,10 +70,12 @@ class GameScene(Scene):
                             self.savegame()
                         elif event.ui_element == self.back_game_button:
                             print('back')
+                            self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                         elif event.ui_element == self.rules_game_button:
                             print('rules')
                         elif event.ui_element == self.exit_game_button:
                             print('exit')
+                            pygame.quit()
                 if hasattr(event, 'customType'):
                     if event.customType == customEvents.PLAYERMOVED:
                         self.switchCurrentTurnPlayer()

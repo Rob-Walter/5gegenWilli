@@ -1,10 +1,11 @@
+import Scenes.leaderboard_scene
 from Scenes.savedGamesScene import SavedGamesScene
 import globals
 import pygame
 import pygame_gui
 import gui_elements
 from Scenes.scene import Scene
-from Scenes.game_Scene import GameScene
+import Scenes.game_Scene
 from database_controller import DB_Controller
 
 class MainMenueScene(Scene):
@@ -15,9 +16,10 @@ class MainMenueScene(Scene):
         
         self.mainmenue_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
 
-        self.new_game_button = gui_elements.createButton((0,0),'NEW GAME','ACCEPT', self.mainmenue_manager)
-        self.load_game_button = gui_elements.createButton((0,100),'LOAD GAME','ACCEPT', self.mainmenue_manager)
-        self.exit_button = gui_elements.createButton((0,200),'EXIT','ACCEPT', self.mainmenue_manager)
+        self.new_game_button = gui_elements.createButton((0,300),'NEW GAME','ACCEPT', self.mainmenue_manager)
+        self.load_game_button = gui_elements.createButton((0,350),'LOAD GAME','ACCEPT', self.mainmenue_manager)
+        self.leaderboard_button = gui_elements.createButton((0,400),'LEADERBOARD','ACCEPT', self.mainmenue_manager)
+        self.exit_button = gui_elements.createButton((0,450),'EXIT','ACCEPT', self.mainmenue_manager)
 
     def login(self):
         dbcontroller = DB_Controller()
@@ -41,8 +43,12 @@ class MainMenueScene(Scene):
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.new_game_button:
                             print('new game')
-                            self.manager.goTo(GameScene())
+                            self.manager.goTo(Scenes.game_Scene.GameScene())
                         elif event.ui_element == self.load_game_button:
                             self.manager.goTo(SavedGamesScene())
+                        elif event.ui_element == self.leaderboard_button:
+                            print('leaderboard')
+                            self.manager.goTo(Scenes.leaderboard_scene.LeaderboardScene())
                         elif event.ui_element == self.exit_button:
                             print('exit')
+                            pygame.quit()

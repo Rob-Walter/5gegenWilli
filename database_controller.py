@@ -53,7 +53,7 @@ class DB_Controller:
 
     #diese methode funkioniert
     def setnewgameintogametable(self, user_id, game_id):
-        time = datetime.now().strftime("%d.%m.%Y, %H:%M:%S")      
+        time = datetime.now().strftime("%d.%m.%Y, %H:%M:%S")
         sql = f"INSERT INTO user_game_table (user_id, game_id, game_status, saved_date) VALUES ({user_id}, {game_id}, 0, '{time}')"
         self.zeiger.execute(sql)
         self.verbindung.commit()
@@ -65,13 +65,13 @@ class DB_Controller:
         return self.zeiger.fetchall()
 
 
-    def savefilegame(self,userid, board : Board):
+    def savefilegame(self,userid, board : Board, currentplayer):
         id = self.setnewgameintogametable(userid,1)
         for columnIndex,column in enumerate(board.get2dArray()):
             for rowIndex, field in enumerate(column):
                 if(field.getPawn() != None):
                     team = field.getPawn().getTeam()
-                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_row, figur_column) VALUES ({userid}, {id}, '{team}', {rowIndex}, {columnIndex})"
+                    sql = f"INSERT INTO savefile_table (user_id, game_number, figur_team, figur_row, figur_column, current_player) VALUES ({userid}, {id}, '{team}', {rowIndex}, {columnIndex}, '{currentplayer}')"
                     self.zeiger.execute(sql)
                     self.verbindung.commit()
     
