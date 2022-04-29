@@ -188,13 +188,13 @@ class Board:
             for columnIndex, field in enumerate(column):
                 if field.getPawn() is not None:                
                     if(field.getPawn().team == "black"):
-                        #if(columnIndex == self.columns - 1):
-                            #return float('inf')
+                        if(columnIndex == self.columns - 1):
+                            return float('inf')
                         countBlack += 1
                         countBlack +=   (-(rowIndex -5)) * 10
                     if(field.getPawn().team == "white"):
-                        #if(columnIndex == self.columns - 1):
-                            #return float('-inf')
+                        if(columnIndex == self.columns - 1):
+                            return float('-inf')
                         countWhite += 1 
                         countWhite +=  rowIndex * 10
         score = countBlack - countWhite
