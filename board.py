@@ -1,7 +1,7 @@
 from numbers import Number
 from field import Field
 from pawn import Pawn
-from customEvents import playerMoved, createWinEvent
+from customEvents import playerMoved, createWinEvent, createDrawEvent, createImmobilizeEvent
 import pygame
 import globals
 
@@ -15,7 +15,7 @@ class Board:
         self.surface = pygame.Surface((self.width, self.height))
         self.tempPawnSurface = None
         self.rows = 6
-        self.columns = 2
+        self.columns = 6
         self.fieldArray2D = []
         for columnIndex in range(0,self.columns):
             column = []
@@ -63,7 +63,7 @@ class Board:
             for rowIndex, field in enumerate(column):
                 if(field.isCurrentlyHovered()):
                     currentField = field
-                    result =  self.checkPossibleMoves(columnIndex, rowIndex, currentTurnPlayer)
+                    result =  self.checkPossibleMoves(columnIndex, rowIndex, currentTurnPlayer.getTeam())
                     print(result)
                     if result[0]:
                         self.markPossibleMove(result[0][0])
@@ -81,11 +81,11 @@ class Board:
         for position in beatPositions:
             self.fieldArray2D[position[0]][position[1]].markAsPossibleBeat(True)
 
-    def checkPossibleMoves(self, column, row,  currentTurnPlayer):
+    def checkPossibleMoves(self, column, row,  team):
         possibleMove = []
         possibleBeats = []
         result = []
-        if (currentTurnPlayer.getTeam() == "white" ):
+        if (team == "white" ):
             if (column  < self.columns - 1): 
                 if(self.fieldArray2D[column+1][row].getPawn() == None):
                     possibleMove.append((column + 1, row))
@@ -95,7 +95,7 @@ class Board:
                 if (row < self.rows - 1):
                        if (self.fieldArray2D[column+1][row + 1].getPawn() != None and self.fieldArray2D[column+1][row + 1].getPawn().getTeam() == "black"):
                         possibleBeats.append((column + 1, row + 1))
-        elif(currentTurnPlayer.getTeam() == "black"):
+        elif(team == "black"):
             if (column  > 0): 
                 if(self.fieldArray2D[column - 1][row].getPawn() == None):
                     possibleMove.append((column - 1, row))
@@ -131,13 +131,15 @@ class Board:
         if(oldField and newField):
             newField.addPawn(oldField.getPawn())
             oldField.removePawn()
-            self.checkForWin()
+            self.checkForWinOrDraw()
             pygame.event.post(playerMoved)
        
 
-    def checkForWin(self):
+    def checkForWinOrDraw(self):
         playerWhitePawnCount = 0
         playerBlackPawnCount = 0
+        playerWhitePossibleMoves = 0
+        playerBlackPossibleMoves = 0
         for columnIndex, column in enumerate(self.fieldArray2D):
             for rowIndex, field in enumerate(column):
                 if(field.getPawn() != None):
@@ -147,15 +149,27 @@ class Board:
                             pygame.event.post(createWinEvent("white"))
                             return
                         playerWhitePawnCount += 1
+                        checkMoves = self.checkPossibleMoves(columnIndex, rowIndex, pawn.getTeam())
+                        if(checkMoves[0] or checkMoves[1]):
+                            playerWhitePossibleMoves += 1
                     elif(pawn.getTeam() == "black"):
                         if(columnIndex == 0):
                              pygame.event.post(createWinEvent("black"))
                              return
                         playerBlackPawnCount += 1
+                        checkMoves = self.checkPossibleMoves(columnIndex, rowIndex, pawn.getTeam())
+                        if(checkMoves[0] or checkMoves[1]):
+                            playerBlackPossibleMoves += 1
         if(playerWhitePawnCount == 0):
             pygame.event.post(createWinEvent("black"))
         elif(playerBlackPawnCount == 0):
             pygame.event.post(createWinEvent("white"))
+        if(playerWhitePossibleMoves == 0):
+            pygame.event.post(createImmobilizeEvent("white"))
+        if(playerBlackPossibleMoves == 0):
+            pygame.event.post(createImmobilizeEvent("black"))
+        if(playerWhitePossibleMoves == 0 and playerBlackPossibleMoves == 0):
+            pygame.event.post(createDrawEvent())
         
 
     def draw(self):

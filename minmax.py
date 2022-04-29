@@ -8,42 +8,49 @@ import pygame
 #depth -> wie tief man in den Tree vordringt (die bestmöglichen Züge vorraussagen)
 #maximizing_player -> boolean | gucken ob maximieren oder minimieren | wenn maximizing_player = false => minimieren
 #game -> ist das Game was gespielt wird
-def minimax(position, depth, maximizing_player): #alpha, beta
+def minimax(initialBoard,piece, initialMove, depth, maximizing_player): #alpha, beta
 
     # board.is_human_turn = not maximizing_player
     # children = board.get_all_possible_moves()
 
 #erstmal testen ob das Game noch läuft bzw. vorbei ist
     if depth == 0:
-        return position.evaluate(), position
+        return initialBoard, initialBoard.evaluate(), piece, initialMove
 
     
 
     if maximizing_player:
         max_eval = float('-inf') #für den MaxPlayer ist negative Unendlichekit (-inf) am besten
-        best_move = None
-        for move in get_all_moves(position, "black"): #Die Ki ist immer Schwarz
+        best_board = None
+        bestmove = None
+        for move in get_all_moves(initialBoard, "black"): #Die Ki ist immer Schwarz
             
-            current_eval = minimax(move, depth - 1, False)[1]
-            print("current",current_eval)
+            current_eval = minimax(move[0],move[1],move[2], depth - 1, False)
+            print("current - max",current_eval)
 
-            max_eval = max(max_eval, current_eval)
+            max_eval = max(max_eval, current_eval[1])
             
-            if current_eval >= max_eval:
-                max_eval = current_eval
-                best_move = move
-        return best_move, max_eval
+            if current_eval[1] == max_eval:
+                max_eval = current_eval[1]
+                best_board = move[0]
+                piece = move[1]
+                bestmove = move[2]
+        return best_board, max_eval, piece, bestmove
 
     else:
         min_eval = float('+inf') #für den MinPlayer ist positive Unendlichekit (+inf) am besten
-        best_move = None
-        for move in get_all_moves(position, "white"): #Der Player ist immer weiß
-            current_eval = minimax(move, depth - 1, True)[1]
-            min_eval = min(min_eval, current_eval)
-            if current_eval <= min_eval:
-                min_eval = current_eval
-                best_move = move
-        return best_move, min_eval
+        best_board = None
+        bestmove = None
+        for move in get_all_moves(initialBoard, "white"): #Der Player ist immer weiß
+            current_eval = minimax(move[0],move[1],move[2], depth - 1, True)
+            print("current - min",current_eval)
+            min_eval = min(min_eval, current_eval[1])
+            if current_eval[1] == min_eval:
+                min_eval = current_eval[1]
+                best_board = move[0]
+                piece = move[1]
+                bestmove = move[2]
+        return best_board, min_eval, piece, bestmove
 
 
 def simulate_move(piece, move, board):
@@ -74,7 +81,7 @@ def get_all_moves(board, color):
                                 field.getPawn().setSprite()
                     board.surface = temp_surface
                     new_board = simulate_move(piece, move, temp_board)
-                    moves.append(new_board)
+                    moves.append((new_board,piece,move))
     return moves
 
 

@@ -5,7 +5,7 @@ from Scenes.mainmenue_scene import MainMenueScene
 
 class SceneManager(object):
     def __init__(self) -> None:
-        self.goTo(GameScene())
+        self.goTo(LoginScene())
 
     def goTo(self,scene):
         self.scene = scene
