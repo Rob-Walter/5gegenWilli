@@ -26,6 +26,6 @@ def createTextfeld(pos, text, type, manager):
     #element.full_redraw()
     return element
 
-def createdropwdown(pos, optionslist, manager):
-    element = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(pos, (100, 50)),options_list=optionslist, starting_option='easy', manager=manager)
+def createdropwdown(pos, optionslist, starting_option, manager):
+    element = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(pos, (100, 50)),options_list=optionslist, starting_option=starting_option, manager=manager)
     return element

@@ -140,11 +140,11 @@ class Board:
         if(oldField and newField):
             newField.addPawn(oldField.getPawn())
             oldField.removePawn()
-            self.checkForWinOrDraw()
-            pygame.event.post(playerMoved)
+            if not self.checkForWinOrDraw():
+                pygame.event.post(playerMoved)
        
 
-    def checkForWinOrDraw(self):
+    def checkForWinOrDraw(self, isSimulated = False):
         playerWhitePawnCount = 0
         playerBlackPawnCount = 0
         playerWhitePossibleMoves = 0
@@ -155,31 +155,54 @@ class Board:
                     pawn = field.getPawn()
                     if(pawn.getTeam() == "white"):
                         if(columnIndex == self.columns - 1):
-                            pygame.event.post(createWinEvent("white"))
-                            return
+                            if not isSimulated:
+                                pygame.event.post(createWinEvent("white"))
+                                return True
+                            return ("win","white")
                         playerWhitePawnCount += 1
                         checkMoves = self.checkPossibleMoves(columnIndex, rowIndex, pawn.getTeam())
                         if(checkMoves[0] or checkMoves[1]):
                             playerWhitePossibleMoves += 1
                     elif(pawn.getTeam() == "black"):
                         if(columnIndex == 0):
-                             pygame.event.post(createWinEvent("black"))
-                             return
+                            if not isSimulated:
+                                pygame.event.post(createWinEvent("black"))
+                                return True
+                            return ("win","black")
                         playerBlackPawnCount += 1
                         checkMoves = self.checkPossibleMoves(columnIndex, rowIndex, pawn.getTeam())
                         if(checkMoves[0] or checkMoves[1]):
                             playerBlackPossibleMoves += 1
         if(playerWhitePawnCount == 0):
-            pygame.event.post(createWinEvent("black"))
+            if not isSimulated:
+                pygame.event.post(createWinEvent("black"))
+                return True
+            return ("win","black")
         elif(playerBlackPawnCount == 0):
-            pygame.event.post(createWinEvent("white"))
-        if(playerWhitePossibleMoves == 0):
-            pygame.event.post(createImmobilizeEvent("white"))
-        if(playerBlackPossibleMoves == 0):
-            pygame.event.post(createImmobilizeEvent("black"))
+            if not isSimulated:
+                pygame.event.post(createWinEvent("white"))
+                return True
+            return ("win","white")
         if(playerWhitePossibleMoves == 0 and playerBlackPossibleMoves == 0):
-            pygame.event.post(createDrawEvent())
+            if not isSimulated:
+                pygame.event.post(createDrawEvent())
+                return True
+            return ("draw","")
+        if(playerWhitePossibleMoves == 0):
+            if not isSimulated:
+                pygame.event.post(createImmobilizeEvent("white"))
+                return False
+            return ("immobilized","white")
+        if(playerBlackPossibleMoves == 0):
+            if not isSimulated:
+                pygame.event.post(createImmobilizeEvent("black"))
+                return False
+            return ("immobilized","black")
+      
         
+        if not isSimulated:
+            return False
+        return("","")
 
     def draw(self):
         for columnIndex,column in enumerate(self.fieldArray2D):
@@ -193,20 +216,20 @@ class Board:
         countBlack:int = 0
         countWhite:int = 0
         score :int = 0
-        for rowIndex, column in enumerate(self.fieldArray2D):
-            for columnIndex, field in enumerate(column):
+        for columnIndex, column in enumerate(self.fieldArray2D):
+            for rowIndex, field in enumerate(column):
                 if field.getPawn() is not None:                
                     if(field.getPawn().team == "black"):
-                        if(columnIndex == self.columns - 1):
-                            return float('inf')
+                        if(columnIndex == 0):
+                            countBlack += 1000000.0
                         countBlack += 1
-                        countBlack +=   (-(rowIndex -5)) * 10
+                        countBlack +=   (-self.columns + columnIndex) * -10
                     if(field.getPawn().team == "white"):
                         if(columnIndex == self.columns - 1):
-                            return float('-inf')
-                        countWhite += 1 
-                        countWhite +=  rowIndex * 10
-        score = countBlack - countWhite
+                            countWhite += -1000000.0
+                        countWhite -= 1 
+                        countWhite +=  (columnIndex + 1) * -10
+        score = countBlack + countWhite
         return score
 
     def get_all_pices(self, color):

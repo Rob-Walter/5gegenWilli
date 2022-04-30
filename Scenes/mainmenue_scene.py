@@ -22,7 +22,7 @@ class MainMenueScene(Scene):
 
         self.new_game_button = gui_elements.createButton((0,self.starting_y + self.count*50),'NEW GAME','ACCEPT', self.mainmenue_manager)
         #print(self.new_game_button.get_relative_rect().width)
-        self.ki_strength_option = gui_elements.createdropwdown((140,self.starting_y + self.count*50),['EASY','MEDIUM','HARD'], self.mainmenue_manager)
+        self.ki_strength_option = gui_elements.createdropwdown((140,self.starting_y + self.count*50),['EASY','MEDIUM','HARD'],"EASY", self.mainmenue_manager)
         self.count += 1
         if globals.user != None:
             self.load_game_button = gui_elements.createButton((0,self.starting_y + self.count*50),'LOAD GAME','ACCEPT', self.mainmenue_manager)
@@ -62,6 +62,7 @@ class MainMenueScene(Scene):
                         elif event.ui_element == self.new_game_button:
                             print('new game')
                             ki_strength = self.ki_strength_option.selected_option
+                            print("KI STRENGTH: ",ki_strength)
                             self.manager.goTo(Scenes.game_Scene.GameScene(False, ki_strength))
                         elif globals.user != None:
                             if event.ui_element == self.load_game_button:

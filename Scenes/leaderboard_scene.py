@@ -29,7 +29,8 @@ class LeaderboardScene(Scene):
         self.leader_manager.draw_ui(screen)
 
     def handleEvents(self, events):
-        dbcontroller = DB_Controller()
+        # wird in jedem Frame aufgerufen
+       # dbcontroller = DB_Controller()
 
         for event in events:
             self.leader_manager.process_events(event)

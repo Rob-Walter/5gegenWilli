@@ -30,12 +30,12 @@ class GameScene(Scene):
         self.playerWhiteMovable = True
         self.playerBlackMovable = True
         self.ki_strength = ki_strength
-        if ki_strength == 'easy':
+        if ki_strength == 'EASY':
             self.ki = 1
-        elif ki_strength == 'medium':
+        elif ki_strength == 'MEDIUM':
             self.ki = 2
-        elif ki_strength == 'hard':
-            self.ki = 3
+        elif ki_strength == 'HARD':
+            self.ki = 4
 
         # if isLoaded:
         #     if loadData[0][5] == "white":
@@ -124,8 +124,10 @@ class GameScene(Scene):
                         self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                     elif event.customType == customEvents.IMMOBILIZED:
                         if event.immobilzedPlayer == "white":
+                            print("IMMOBILIZED WHITE")
                             self.playerWhiteMovable = False
                         if event.immobilzedPlayer == "black":
+                            print("IMMOBILIZED BLACK")
                             self.playerBlackMovable = False
             self.game_manager.process_events(event)
 
