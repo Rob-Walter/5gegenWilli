@@ -20,11 +20,11 @@ class SavedGamesScene(Scene):
             for entryIndex, entry in enumerate(data):
                 print(data)
                 positionY = entryIndex * 60
-                dateTextBox =gui_elements.createTextfeld((0,positionY), entry[3], globals.textboxTypes['INFO'],self.savedGames_manager)
+                dateTextBox =gui_elements.createTextfeld((0,positionY), entry[3], globals.textboxTypes['SAVE'],self.savedGames_manager)
                 loadEntryButton = gui_elements.createButton((260,positionY),"Spielstand laden",globals.buttonTypes["ACCEPT"],self.savedGames_manager)
                 self.ButtonListWithGameNumber.append((loadEntryButton, entry[0]))
         else:
-            textBox = gui_elements.createTextfeld((0,0), "Keine Spielstände vorhanden", globals.textboxTypes['INFO'],self.savedGames_manager)
+            textBox = gui_elements.createTextfeld((0,0), "Keine Spielstände vorhanden", globals.textboxTypes['SAVE'],self.savedGames_manager)
 
 
     def loadSavedGames(self):

@@ -81,5 +81,12 @@
         }
 
 
+    },
+    "@saveentry": {
+        "colours":
+        {
+            "dark_bg":"white",
+            "normal_text": "black"
+        }
     }
 }

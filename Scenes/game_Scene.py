@@ -35,7 +35,7 @@ class GameScene(Scene):
         elif ki_strength == 'MEDIUM':
             self.ki = 2
         elif ki_strength == 'HARD':
-            self.ki = 4
+            self.ki = 3
 
         # if isLoaded:
         #     if loadData[0][5] == "white":
@@ -110,9 +110,8 @@ class GameScene(Scene):
                             print('save game')
                             self.savegame()
                 if hasattr(event, 'customType'):
-                    if event.customType == customEvents.PLAYERMOVED:
-                        self.switchCurrentTurnPlayer()
-                    elif event.customType == customEvents.PLAYERWIN:
+                    
+                    if event.customType == customEvents.PLAYERWIN:
                         if event.winner == "white":
                             print("Weiß gewinnt")
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
@@ -129,5 +128,7 @@ class GameScene(Scene):
                         if event.immobilzedPlayer == "black":
                             print("IMMOBILIZED BLACK")
                             self.playerBlackMovable = False
+                    elif event.customType == customEvents.PLAYERMOVED:
+                        self.switchCurrentTurnPlayer()
             self.game_manager.process_events(event)
 

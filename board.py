@@ -223,12 +223,12 @@ class Board:
                         if(columnIndex == 0):
                             countBlack += 1000000.0
                         countBlack += 1
-                        countBlack +=   (-self.columns + columnIndex) * -10
+                        countBlack += (-self.columns + columnIndex + 1) * -10 + ((-self.columns + columnIndex + 1) ** 2)
                     if(field.getPawn().team == "white"):
                         if(columnIndex == self.columns - 1):
                             countWhite += -1000000.0
                         countWhite -= 1 
-                        countWhite +=  (columnIndex + 1) * -10
+                        countWhite +=  (columnIndex + 1) * -10 - ((columnIndex + 1) ** 2)
         score = countBlack + countWhite
         return score
 
