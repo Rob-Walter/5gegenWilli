@@ -19,7 +19,7 @@ saveGameNumber = None
 
 #GUI-Manager
 buttonTypes = {'ACCEPT': '@accept_buttons' , 'DECLINE' : '@decline_buttons', 'STRENGTH': '@strength_buttons', 'SAVE': '@save_buttons'}
-textboxTypes = {'INFO':'@infotext', 'WARN': '@warntext', 'RULES': '@rulestext', 'HEADER': '@headertext', "SAVE":"@saveentry"}
+textboxTypes = {'INFO':'@infotext', 'WARN': '@warntext', 'RULES': '@rulestext', 'HEADER': '@headertext', 'DATA': '@datatext', "SAVE":"@saveentry"}
 inputTypes = {'NORMAL':'@normalinput', 'PASSWORD': '@passwordinput'}
 
 def setStartingPoints(x,y):

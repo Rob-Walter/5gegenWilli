@@ -30,7 +30,7 @@ class SavedGamesScene(Scene):
 
     def loadSavedGames(self):
         dbcontroller = DB_Controller()
-        return dbcontroller.loadSavedGames(globals.user["id"])
+        return dbcontroller.loadSavedGames()
 
     def loadSaveGameAndInitiliaseGame(self,gameNumber):
         dbcontroller = DB_Controller()

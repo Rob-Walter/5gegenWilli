@@ -1,3 +1,5 @@
+from array import array
+from audioop import reverse
 from shelve import DbfilenameShelf
 import Scenes.mainmenue_scene
 import globals
@@ -15,6 +17,7 @@ class LeaderboardScene(Scene):
     def __init__(self):
         self.leader_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
         self.back_button = gui_elements.createButton((0,350),'BACK',globals.buttonTypes['ACCEPT'], self.leader_manager)
+        self.currentleaderboardarray = []
         #self.rules_label = gui_elements.createTextfeld((200,150),"text",globals.textboxTypes['RULES'], self.leader_manager)
 
         self.easy_button = gui_elements.createButton((300,50),'EASY',globals.buttonTypes['STRENGTH'], self.leader_manager)
@@ -27,13 +30,45 @@ class LeaderboardScene(Scene):
     def render(self, screen):
         self.leader_manager.draw_ui(screen)
 
-    def leaderboard(self, ki_strength):
+    def getleaderboard(self, ki_strength):
         dbcontroller = DB_Controller()
-        ausgabe = dbcontroller.getleaderboard(ki_strength)
-        print(ausgabe)
+        leaderboard = dbcontroller.getallleaderboard(ki_strength)
+        self.currentleaderboardarray = self.sortleaderboard(leaderboard)
+        self.drawleaderboard()
+        #print(ausgabe)
+    
+    def sortleaderboard(self, leaderboard):
+        ausgabe = []
+        for entry in leaderboard:
+            if not [item for item in ausgabe if item[0] == entry[0]]:
+                ausgabe.append(list(entry))
+            else:
+                for element in ausgabe:
+                    if element[0] == entry[0]:
+                        element[1] += entry[1]
+                        element[2] += entry[2]
+        ausgabe.sort(key=lambda x:int(x[1]), reverse=True)
+        return ausgabe
+    
+    def drawleaderboard(self):
+        offset_y = 250
+        offset_x = 350
+
+        gui_elements.createTextfeld((offset_x,offset_y-50),'USERNAME',globals.textboxTypes['DATA'], self.leader_manager)
+        gui_elements.createTextfeld((offset_x+100,offset_y-50),'WINS',globals.textboxTypes['DATA'], self.leader_manager)
+        gui_elements.createTextfeld((offset_x+100*2,offset_y-50),'LOSSES',globals.textboxTypes['DATA'], self.leader_manager)
+
+
+        for index,element in enumerate(self.currentleaderboardarray):
+            result = element[0]+":"+str(element[1])+" / "+str(element[2])
+            #print(result)
+            gui_elements.createTextfeld((offset_x,offset_y+50*index),element[0],globals.textboxTypes['DATA'], self.leader_manager)
+            gui_elements.createTextfeld((offset_x+100,offset_y+50*index),str(element[1]),globals.textboxTypes['DATA'], self.leader_manager)
+            gui_elements.createTextfeld((offset_x+100*2,offset_y+50*index),str(element[2]),globals.textboxTypes['DATA'], self.leader_manager)
+
+
 
     def handleEvents(self, events):
-        
         for event in events:
             self.leader_manager.process_events(event)
             if event.type == pygame.USEREVENT:
@@ -44,13 +79,13 @@ class LeaderboardScene(Scene):
                                 self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                             elif event.ui_element == self.easy_button:
                                 print('leaderboard for easy')
-                                self.leaderboard('easy')
+                                self.getleaderboard('easy')
                             elif event.ui_element == self.medium_button:
                                 print('leaderboard for medium')
-                                self.leaderboard('medium')
+                                self.getleaderboard('medium')
                             elif event.ui_element == self.hard_button:
                                 print('leaderboard for hard')
-                                self.leaderboard('hard')
+                                self.getleaderboard('hard')
                     #if event.user_type == pygame_gui.UI_TEXT_ENTRY_FINISHED: 
                         #if event.ui_element == self.username_input:
                             #username = self.username_input.get_text()
