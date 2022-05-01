@@ -81,6 +81,10 @@ class GameScene(Scene):
     def savegame(self):
         dbcontroller = DB_Controller()
         dbcontroller.savefilegame(globals.user['id'],self.board, self.currentTurnPlayer.getTeam(), self.ki_strength)
+    
+    def insertintoleaderboard(self, win, loss):
+        dbcontroller = DB_Controller()
+        dbcontroller.insertgameintoleaderboard(globals.user['id'], self.ki_strength, win, loss)
 
     def handleEvents(self, events):
         for event in events:
@@ -115,9 +119,11 @@ class GameScene(Scene):
                     elif event.customType == customEvents.PLAYERWIN:
                         if event.winner == "white":
                             print("Weiß gewinnt")
+                            self.insertintoleaderboard(1, 0)
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                         if event.winner == "black":
                             print("Black gewinnt")
+                            self.insertintoleaderboard(0, 1)
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                     elif event.customType == customEvents.DRAW:
                         print("Unentschieden")

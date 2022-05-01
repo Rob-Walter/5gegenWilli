@@ -59,12 +59,6 @@ class DB_Controller:
         self.verbindung.commit()
         return self.zeiger.lastrowid
 
-    def loadSavedGames(self, user_id):
-        sql = sql = f"SELECT * FROM user_game_table WHERE user_id = '{user_id}'"
-        self.zeiger.execute(sql)
-        return self.zeiger.fetchall()
-
-
     def savefilegame(self,userid, board : Board, currentplayer, ki_strength):
         id = None
         if globals.saveGameNumber != None:
@@ -125,14 +119,28 @@ class DB_Controller:
         leaderboardarray.sort()
         return leaderboardarray
     
+    def getallleaderboard(self):
+        sql = f"SELECT * FROM leaderboard_table"
+        self.zeiger.execute(sql)
+        inhalt = self.zeiger.fetchall()
+        print(inhalt)
+    
     def sortforleaderboard(leaderboardarray):
         print(leaderboardarray)
+
+    def insertgameintoleaderboard(self, user_id, ki_strength, win, loss):
+        sql = f"INSERT INTO leaderboard_table (user_id, ki_strength, win, loss) VALUES ({user_id}, '{ki_strength}', {win}, {loss})"
+        print(sql)
+        result = self.zeiger.execute(sql)
+        self.verbindung.commit()
+        
 
 
 
                 
-controller = DB_Controller()
-controller.getleaderboard('easy')
+#controller = DB_Controller()
+#controller.getallleaderboard()
+#controller.insertgameintoleaderboard(1,'easy', 1, 0)
 #controller.savegame()
 #controller.setnewgameintogametable(1, 1)
 #controller.insertnewplayer('test', 'test')

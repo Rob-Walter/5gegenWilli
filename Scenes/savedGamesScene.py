@@ -38,7 +38,6 @@ class SavedGamesScene(Scene):
         ki_strength = result[0][6]
         self.manager.goTo(Scenes.game_Scene.GameScene(True,ki_strength,result))
 
-
     def update(self, time_delta):
         self.savedGames_manager.update(time_delta)
 
