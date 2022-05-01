@@ -39,6 +39,7 @@ class StartScene(Scene):
                             self.manager.goTo(Scenes.registration_scene.RegistrationScene())
                         elif event.ui_element == self.guest_button:
                             print('guest')
+                            globals.unsetUser()
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                         elif event.ui_element == self.exit_button:
                             print('exit')

@@ -24,7 +24,7 @@ def main():
         time_delta = clock.tick(FPS)/1000.0
         if pygame.event.get(pygame.QUIT):
             run = False
-            return
+            break
 
         sceneManager.scene.handleEvents(pygame.event.get())
         sceneManager.scene.update(time_delta)

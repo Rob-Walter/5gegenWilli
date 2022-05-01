@@ -38,6 +38,10 @@ def setUser(username, id):
     global user
     user = {'username': username, 'id': id}
 
+def unsetUser():
+    global user
+    user = None
+
 def setSaveGameNumber(gamenumber):
     global saveGameNumber
     saveGameNumber = gamenumber
