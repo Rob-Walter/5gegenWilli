@@ -190,14 +190,14 @@ class Board:
             return ("draw","")
         if(playerWhitePossibleMoves == 0):
             if not isSimulated:
-                pygame.event.post(createImmobilizeEvent("white"))
-                return False
-            return ("immobilized","white")
+                pygame.event.post(createWinEvent("black"))
+                return True
+            return ("win","black")
         if(playerBlackPossibleMoves == 0):
             if not isSimulated:
-                pygame.event.post(createImmobilizeEvent("black"))
-                return False
-            return ("immobilized","black")
+                pygame.event.post(createWinEvent("white"))
+                return True
+            return ("win","white")
       
         
         if not isSimulated:

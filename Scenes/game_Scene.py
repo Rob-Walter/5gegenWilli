@@ -59,10 +59,10 @@ class GameScene(Scene):
 
 
     def switchCurrentTurnPlayer(self):
-        if self.currentTurnPlayer == self.playerBlack and self.playerWhiteMovable or not self.playerBlackMovable:
+        if self.currentTurnPlayer == self.playerBlack:
             self.currentTurnPlayer = self.playerWhite
 
-        elif self.currentTurnPlayer == self.playerWhite and self.playerBlackMovable or not self.playerWhiteMovable:
+        elif self.currentTurnPlayer == self.playerWhite:
             self.currentTurnPlayer = self.playerBlack
             result = minmax.minimax(self.board,None,None, self.ki, True)
             print("RESULT: ", result)
@@ -127,13 +127,6 @@ class GameScene(Scene):
                     elif event.customType == customEvents.DRAW:
                         print("Unentschieden")
                         self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
-                    elif event.customType == customEvents.IMMOBILIZED:
-                        if event.immobilzedPlayer == "white":
-                            print("IMMOBILIZED WHITE")
-                            self.playerWhiteMovable = False
-                        if event.immobilzedPlayer == "black":
-                            print("IMMOBILIZED BLACK")
-                            self.playerBlackMovable = False
                     elif event.customType == customEvents.PLAYERMOVED:
                         self.switchCurrentTurnPlayer()
             self.game_manager.process_events(event)
