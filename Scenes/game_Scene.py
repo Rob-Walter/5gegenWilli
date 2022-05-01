@@ -49,10 +49,10 @@ class GameScene(Scene):
         #GUI Manager
         self.game_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
         if globals.user != None:
-            self.save_game_button = gui_elements.createButton((0,300),'SAVE','ACCEPT', self.game_manager)
-        self.back_game_button = gui_elements.createButton((0,350),'BACK','ACCEPT', self.game_manager)
-        self.rules_game_button = gui_elements.createButton((0,400),'RULES','ACCEPT', self.game_manager)
-        self.exit_game_button = gui_elements.createButton((0,450),'EXIT','ACCEPT', self.game_manager)
+            self.save_game_button = gui_elements.createButton((0,300),'SAVE',globals.buttonTypes['ACCEPT'], self.game_manager)
+        self.back_game_button = gui_elements.createButton((0,350),'BACK',globals.buttonTypes['ACCEPT'], self.game_manager)
+        self.rules_game_button = gui_elements.createButton((0,400),'RULES',globals.buttonTypes['ACCEPT'], self.game_manager)
+        self.exit_game_button = gui_elements.createButton((0,450),'EXIT',globals.buttonTypes['ACCEPT'], self.game_manager)
         self.rules_label = gui_elements.createTextfeld((200,150),"Bauernschach ist eine Variante des Schachs nur mit Bauern und auf einem <br>6x6 Feld. Schwarze sowie weiße Figuren stehen dabei an der <br>gegenüberliegenden Grundlinie. Die Farbe weiß beginnt den Zug, danach folgen die <br>schwarzen Figuren. Zwei Züge sind erlaubt: Ein Bauer darf nach vorne <br>ziehen wenn das vordere Feld frei ist. Es muss dabei in die Richtung <br>der gegnerischen Grundlinie bewegen. Schlagen darf der Bauer in Richtung der <br>gegnerischen Grundlinie durch diagonales Ziehen in Richtung der gegnerischen Grundlinie, <br>aber auch nur wenn auf diesem Feld ein gegnerischer Bauer steht. <br>Der “geschlagene” Bauer wird vom Spielbrett genommen. Gewonnen hat man das <br>Spiel wenn man einen eigenen Bauern auf die gegnerische Grundlinie platziert. <br>Die Farbe die dies erreicht, ist der Sieger. Wenn ein Spieler weder Züge oder Figuren <br>hat zählt das Spiel für ihn verloren. In dieser Variante des <br>Bauernschachs gibt es kein Unentschieden.",globals.textboxTypes['RULES'], self.game_manager)
         self.rules_label.visible=0
         self.strength_label = gui_elements.createTextfeld((0,150),self.ki_strength,globals.textboxTypes['INFO'], self.game_manager)
@@ -81,6 +81,10 @@ class GameScene(Scene):
     def savegame(self):
         dbcontroller = DB_Controller()
         dbcontroller.savefilegame(globals.user['id'],self.board, self.currentTurnPlayer.getTeam(), self.ki_strength)
+    
+    def insertintoleaderboard(self, win, loss):
+        dbcontroller = DB_Controller()
+        dbcontroller.insertgameintoleaderboard(globals.user['id'], self.ki_strength, win, loss)
 
     def handleEvents(self, events):
         for event in events:
@@ -114,9 +118,11 @@ class GameScene(Scene):
                     if event.customType == customEvents.PLAYERWIN:
                         if event.winner == "white":
                             print("Weiß gewinnt")
+                            self.insertintoleaderboard(1, 0)
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                         if event.winner == "black":
                             print("Black gewinnt")
+                            self.insertintoleaderboard(0, 1)
                             self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                     elif event.customType == customEvents.DRAW:
                         print("Unentschieden")

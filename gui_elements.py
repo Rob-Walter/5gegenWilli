@@ -22,8 +22,6 @@ def createTextfeld(pos, text, type, manager):
         element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (250, 50)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
     elif len(text) == 1:
         element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (30, 30)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
-        #element.disable() #disables the scroll bar
-        #element.kill()
     #element.rebuild()
     #element.full_redraw()
     return element

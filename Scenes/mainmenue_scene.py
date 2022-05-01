@@ -20,18 +20,18 @@ class MainMenueScene(Scene):
 
         self.mainmenue_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
 
-        self.new_game_button = gui_elements.createButton((0,self.starting_y + self.count*50),'NEW GAME','ACCEPT', self.mainmenue_manager)
+        self.new_game_button = gui_elements.createButton((0,self.starting_y + self.count*50),'NEW GAME',globals.buttonTypes['ACCEPT'], self.mainmenue_manager)
         #print(self.new_game_button.get_relative_rect().width)
         self.ki_strength_option = gui_elements.createdropwdown((140,self.starting_y + self.count*50),['EASY','MEDIUM','HARD'],"EASY", self.mainmenue_manager)
         self.count += 1
         if globals.user != None:
-            self.load_game_button = gui_elements.createButton((0,self.starting_y + self.count*50),'LOAD GAME','ACCEPT', self.mainmenue_manager)
+            self.load_game_button = gui_elements.createButton((0,self.starting_y + self.count*50),'LOAD GAME',globals.buttonTypes['ACCEPT'], self.mainmenue_manager)
             self.count += 1
-            self.leaderboard_button = gui_elements.createButton((0,self.starting_y + self.count*50),'LEADERBOARD','ACCEPT', self.mainmenue_manager)
+            self.leaderboard_button = gui_elements.createButton((0,self.starting_y + self.count*50),'LEADERBOARD',globals.buttonTypes['ACCEPT'], self.mainmenue_manager)
             self.count += 1
-        self.back_button = gui_elements.createButton((0,self.starting_y + self.count*50),'BACK','ACCEPT', self.mainmenue_manager)
+        self.back_button = gui_elements.createButton((0,self.starting_y + self.count*50),'BACK',globals.buttonTypes['ACCEPT'], self.mainmenue_manager)
         self.count += 1
-        self.exit_button = gui_elements.createButton((0,self.starting_y + self.count*50),'EXIT','ACCEPT', self.mainmenue_manager)
+        self.exit_button = gui_elements.createButton((0,self.starting_y + self.count*50),'EXIT',globals.buttonTypes['ACCEPT'], self.mainmenue_manager)
 
     def login(self):
         dbcontroller = DB_Controller()

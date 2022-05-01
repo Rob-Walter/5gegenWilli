@@ -25,9 +25,9 @@ class LoginScene(Scene):
         self.password_label = gui_elements.createTextfeld((500,320),'PASSWORD',globals.textboxTypes['INFO'], self.login_manager)
         self.password_input = gui_elements.createInput((500,370),globals.inputTypes['PASSWORD'], self.login_manager)
 
-        self.login_button = gui_elements.createButton((500,480),'LOGIN','ACCEPT', self.login_manager)
+        self.login_button = gui_elements.createButton((500,480),'LOGIN',globals.buttonTypes['ACCEPT'], self.login_manager)
 
-        self.back_button = gui_elements.createButton((500,530),'BACK','ACCEPT', self.login_manager)
+        self.back_button = gui_elements.createButton((500,530),'BACK',globals.buttonTypes['ACCEPT'], self.login_manager)
 
     def login(self):
         dbcontroller = DB_Controller()
@@ -51,7 +51,7 @@ class LoginScene(Scene):
                             if self.login():
                                 self.manager.goTo(MainMenueScene())
                             else:
-                                print('fehler ist aufgetreten')
+                                print('Spieler nicht gefunden')
                         elif event.ui_element == self.back_button:
                             print('back')
                             self.manager.goTo(StartScene())
