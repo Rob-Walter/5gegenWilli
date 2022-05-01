@@ -7,7 +7,7 @@ from Scenes.start_scene import StartScene
 
 class SceneManager(object):
     def __init__(self) -> None:
-        self.goTo(LoginScene())
+        self.goTo(LeaderboardScene())
 
     def goTo(self,scene):
         self.scene = scene

@@ -85,6 +85,12 @@ class DB_Controller:
         sql = f"SELECT * FROM savefile_table WHERE game_number = {gameNumber} AND user_id = {userId}"
         return self.zeiger.execute(sql).fetchall()
 
+    def loadSavedGames(self):
+        sql = sql = f"SELECT * FROM user_game_table WHERE user_id = '{globals.user['id']}'"
+        self.zeiger.execute(sql)
+        return self.zeiger.fetchall()
+
+
     def setgamestatusonfinished(self, game_number):
         sql = f"UPDATE user_game_table SET game_status = 1 WHERE game_number = {game_number}"
         result = self.zeiger.execute(sql)
@@ -100,6 +106,7 @@ class DB_Controller:
         inhalt = self.zeiger.fetchall()
         print(inhalt)
 
+    # kann später gelöscht werden (wird ersetzt durch getallleaderboard)
     def getleaderboard(self, ki_strength):
         userarry = []
         leaderboardarray = []
@@ -116,23 +123,24 @@ class DB_Controller:
             inhalt = self.zeiger.fetchall()
             leaderboardarray.append(inhalt)
 
-        leaderboardarray.sort()
+        #leaderboardarray = self.sortforleaderboard(leaderboardarray)
         return leaderboardarray
     
-    def getallleaderboard(self):
-        sql = f"SELECT * FROM leaderboard_table"
+    def getallleaderboard(self, ki_strength):
+        sql = f"SELECT ut.nickname, lt.win, lt.loss FROM leaderboard_table lt INNER JOIN user_table ut ON ut.user_id = lt.user_id WHERE ki_strength = '{ki_strength}'"
         self.zeiger.execute(sql)
         inhalt = self.zeiger.fetchall()
-        print(inhalt)
+        return inhalt
     
-    def sortforleaderboard(leaderboardarray):
-        print(leaderboardarray)
-
-    def insertgameintoleaderboard(self, user_id, ki_strength, win, loss):
-        sql = f"INSERT INTO leaderboard_table (user_id, ki_strength, win, loss) VALUES ({user_id}, '{ki_strength}', {win}, {loss})"
-        print(sql)
+    def insertgameintoleaderboard(self, ki_strength, win, loss):
+        sql = f"INSERT INTO leaderboard_table (user_id, ki_strength, win, loss) VALUES ({globals.user['id']}, '{ki_strength}', {win}, {loss})"
         result = self.zeiger.execute(sql)
         self.verbindung.commit()
+        print('saved for leaderboard')
+
+            
+        
+
         
 
 

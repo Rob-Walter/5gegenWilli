@@ -1,3 +1,5 @@
+from array import array
+from audioop import reverse
 from shelve import DbfilenameShelf
 import Scenes.mainmenue_scene
 import globals
@@ -27,14 +29,26 @@ class LeaderboardScene(Scene):
     def render(self, screen):
         self.leader_manager.draw_ui(screen)
 
-    def leaderboard(self, ki_strength):
+    def getleaderboard(self, ki_strength):
         dbcontroller = DB_Controller()
-        ausgabe = dbcontroller.getleaderboard(ki_strength)
+        leaderboard = dbcontroller.getallleaderboard(ki_strength)
+        ausgabe = self.sortleaderboard(leaderboard)
         print(ausgabe)
+    
+    def sortleaderboard(self, leaderboard):
+        ausgabe = []
+        for entry in leaderboard:
+            if not [item for item in ausgabe if item[0] == entry[0]]:
+                ausgabe.append(list(entry))
+            else:
+                for element in ausgabe:
+                    if element[0] == entry[0]:
+                        element[1] += entry[1]
+                        element[2] += entry[2]
+        ausgabe.sort(key=lambda x:int(x[1]), reverse=True)
+        return ausgabe
 
     def handleEvents(self, events):
-        
-
         for event in events:
             self.leader_manager.process_events(event)
             if event.type == pygame.USEREVENT:
@@ -45,13 +59,13 @@ class LeaderboardScene(Scene):
                                 self.manager.goTo(Scenes.mainmenue_scene.MainMenueScene())
                             elif event.ui_element == self.easy_button:
                                 print('leaderboard for easy')
-                                self.leaderboard('easy')
+                                self.getleaderboard('easy')
                             elif event.ui_element == self.medium_button:
                                 print('leaderboard for medium')
-                                self.leaderboard('medium')
+                                self.getleaderboard('medium')
                             elif event.ui_element == self.hard_button:
                                 print('leaderboard for hard')
-                                self.leaderboard('hard')
+                                self.getleaderboard('hard')
                     #if event.user_type == pygame_gui.UI_TEXT_ENTRY_FINISHED: 
                         #if event.ui_element == self.username_input:
                             #username = self.username_input.get_text()

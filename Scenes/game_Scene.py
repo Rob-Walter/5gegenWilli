@@ -83,8 +83,11 @@ class GameScene(Scene):
         dbcontroller.savefilegame(globals.user['id'],self.board, self.currentTurnPlayer.getTeam(), self.ki_strength)
     
     def insertintoleaderboard(self, win, loss):
-        dbcontroller = DB_Controller()
-        dbcontroller.insertgameintoleaderboard(globals.user['id'], self.ki_strength, win, loss)
+        if globals.user != None:
+            dbcontroller = DB_Controller()
+            dbcontroller.insertgameintoleaderboard(self.ki_strength, win, loss)
+        else:
+            return
 
     def handleEvents(self, events):
         for event in events:
