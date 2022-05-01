@@ -18,12 +18,12 @@ def createTextfeld(pos, text, type, manager):
         element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (130, 50)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
     elif type == globals.textboxTypes['RULES']:
         element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (900, 500)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
-    elif len(text) == 1:
-        element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (30, 30)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
+    elif type == globals.textboxTypes['DATA']:
+        element = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect(pos, (100, 50)), html_text=text, manager=manager, object_id=ObjectID(class_id=type))
     #element.rebuild()
     #element.full_redraw()
     return element
 
 def createdropwdown(pos, optionslist, manager):
-    element = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(pos, (100, 50)),options_list=optionslist, starting_option='easy', manager=manager)
+    element = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(pos, (100, 50)),options_list=optionslist, starting_option='EASY', manager=manager)
     return element

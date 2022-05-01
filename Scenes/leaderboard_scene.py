@@ -17,6 +17,7 @@ class LeaderboardScene(Scene):
     def __init__(self):
         self.leader_manager = pygame_gui.UIManager((1200, 800), 'theme.json')
         self.back_button = gui_elements.createButton((0,350),'BACK',globals.buttonTypes['ACCEPT'], self.leader_manager)
+        self.currentleaderboardarray = []
         #self.rules_label = gui_elements.createTextfeld((200,150),"text",globals.textboxTypes['RULES'], self.leader_manager)
 
         self.easy_button = gui_elements.createButton((300,50),'EASY',globals.buttonTypes['STRENGTH'], self.leader_manager)
@@ -32,8 +33,9 @@ class LeaderboardScene(Scene):
     def getleaderboard(self, ki_strength):
         dbcontroller = DB_Controller()
         leaderboard = dbcontroller.getallleaderboard(ki_strength)
-        ausgabe = self.sortleaderboard(leaderboard)
-        print(ausgabe)
+        self.currentleaderboardarray = self.sortleaderboard(leaderboard)
+        self.drawleaderboard()
+        #print(ausgabe)
     
     def sortleaderboard(self, leaderboard):
         ausgabe = []
@@ -47,6 +49,24 @@ class LeaderboardScene(Scene):
                         element[2] += entry[2]
         ausgabe.sort(key=lambda x:int(x[1]), reverse=True)
         return ausgabe
+    
+    def drawleaderboard(self):
+        offset_y = 250
+        offset_x = 350
+
+        gui_elements.createTextfeld((offset_x,offset_y-50),'USERNAME',globals.textboxTypes['DATA'], self.leader_manager)
+        gui_elements.createTextfeld((offset_x+100,offset_y-50),'WINS',globals.textboxTypes['DATA'], self.leader_manager)
+        gui_elements.createTextfeld((offset_x+100*2,offset_y-50),'LOSSES',globals.textboxTypes['DATA'], self.leader_manager)
+
+
+        for index,element in enumerate(self.currentleaderboardarray):
+            result = element[0]+":"+str(element[1])+" / "+str(element[2])
+            #print(result)
+            gui_elements.createTextfeld((offset_x,offset_y+50*index),element[0],globals.textboxTypes['DATA'], self.leader_manager)
+            gui_elements.createTextfeld((offset_x+100,offset_y+50*index),str(element[1]),globals.textboxTypes['DATA'], self.leader_manager)
+            gui_elements.createTextfeld((offset_x+100*2,offset_y+50*index),str(element[2]),globals.textboxTypes['DATA'], self.leader_manager)
+
+
 
     def handleEvents(self, events):
         for event in events:

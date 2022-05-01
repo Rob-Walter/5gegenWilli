@@ -30,11 +30,11 @@ class GameScene(Scene):
         self.playerWhiteMovable = True
         self.playerBlackMovable = True
         self.ki_strength = ki_strength
-        if ki_strength == 'easy':
+        if ki_strength == 'EASY':
             self.ki = 1
-        elif ki_strength == 'medium':
+        elif ki_strength == 'MEDIUM':
             self.ki = 2
-        elif ki_strength == 'hard':
+        elif ki_strength == 'HARD':
             self.ki = 3
 
         # if isLoaded:
